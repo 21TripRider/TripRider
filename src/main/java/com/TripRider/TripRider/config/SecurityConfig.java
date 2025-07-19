@@ -1,5 +1,6 @@
 package com.TripRider.TripRider.config;
 
+import com.TripRider.TripRider.service.CustomOAuth2UserService;
 import com.TripRider.TripRider.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,8 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @Configuration
 public class SecurityConfig {
 
-    private final UserDetailService userService;
+    private final UserDetailService userService; //일반 로그인용
+    private final CustomOAuth2UserService customOAuth2UserService; //소셜 로그인용
 
     // 스프링 시큐리티 기능 비활성화
     @Bean
@@ -35,9 +37,16 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/signup", "/user").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
+                .formLogin(form -> form //일반 로그인
                         .loginPage("/login")
                         .defaultSuccessUrl("/articles")
+                )
+                .oauth2Login(oauth2 -> oauth2 //소셜 로그인
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/articles")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService) // 사용자 정보 매핑 서비스 연결
+                        )
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")
