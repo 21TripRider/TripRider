@@ -36,6 +36,12 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+weather:
+  api:
+    base-url: "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0"
+    service-key: "B9lcEXU87CZ1bElz2TDsg24h3MrLRNIvSaS3U3tJadZevbVF15IegPFce577ni1sQSNvFEueuKIwO0wQcAd4tQ=="
+
+
 logging:
   level:
     org.hibernate.SQL: debug

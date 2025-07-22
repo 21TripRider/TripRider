@@ -39,11 +39,11 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form //일반 로그인
                         .loginPage("/login")
-                        .defaultSuccessUrl("/articles")
+                        .defaultSuccessUrl("/home")
                 )
                 .oauth2Login(oauth2 -> oauth2 //소셜 로그인
                         .loginPage("/login")
-                        .defaultSuccessUrl("/articles")
+                        .defaultSuccessUrl("/home")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService) // 사용자 정보 매핑 서비스 연결
                         )
