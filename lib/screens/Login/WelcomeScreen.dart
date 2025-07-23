@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:triprider/screens/Login/LoginScreen.dart';
+import 'package:triprider/screens/widgets/login_button.dart';
 
 class Welcomescreen extends StatelessWidget {
   const Welcomescreen({super.key});
@@ -17,7 +19,14 @@ class Welcomescreen extends StatelessWidget {
             SizedBox(height: 150),
 
             ///동일한 코드 반복
-            Login_Button(),
+            LoginButton(
+              T: 0,
+              B: 0,
+              L: 0,
+              R: 0,
+              child: LoginButton_Child(),
+              color: Color(0XFFFF426B),
+            ),
 
             SizedBox(height: 20),
 
@@ -32,7 +41,6 @@ class Welcomescreen extends StatelessWidget {
 onPressed_Login() {}
 
 onPressed_Account() {}
-
 
 ///첫 로고 화면
 class TripRider_logo extends StatelessWidget {
@@ -64,36 +72,6 @@ class TripRider_logo extends StatelessWidget {
   }
 }
 
-
-///로그인 버튼
-class Login_Button extends StatelessWidget {
-  const Login_Button({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15, left: 17, right: 17),
-      child: Container(
-        width: double.infinity,
-        height: 68,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Color(0XFFFF4E6B)),
-          onPressed: onPressed_Login,
-          child: Text(
-            '로그인',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
 ///회원가입 버튼
 class Account_Button extends StatelessWidget {
   const Account_Button({super.key});
@@ -117,6 +95,22 @@ class Account_Button extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class loginButton_Child extends StatelessWidget {
+  const loginButton_Child({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '로그인',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
       ),
     );
   }
