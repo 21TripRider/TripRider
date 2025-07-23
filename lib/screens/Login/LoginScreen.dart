@@ -179,11 +179,11 @@ class _Or extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Divider(thickness: 3, color: Colors.black, endIndent: 10),
+            child: Divider(thickness: 2, color: Colors.black, endIndent: 10),
           ),
           Text("or", style: TextStyle(fontSize: 25)),
           Expanded(
-            child: Divider(thickness: 3, color: Colors.black, indent: 10),
+            child: Divider(thickness: 2, color: Colors.black, indent: 10),
           ),
         ],
       ),
