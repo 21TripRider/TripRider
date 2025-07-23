@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Login/LoginScreen.dart';
+import 'package:triprider/screens/Login/LoginScreen.dart';
+
 
 class LoginButton extends StatelessWidget {
   final double T, B, L, R;
@@ -26,7 +27,7 @@ class LoginButton extends StatelessWidget {
         height: 68,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: color),
-          onPressed: onPressed_Login,
+          onPressed: onPressed_Login(),
           child: child,
         ),
       ),

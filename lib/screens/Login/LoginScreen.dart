@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:triprider/screens/widgets/login_button.dart';
+import 'package:triprider/widgets/login_button.dart';
 
 class Loginscreen extends StatelessWidget {
   const Loginscreen({super.key});
