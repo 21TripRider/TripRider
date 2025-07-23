@@ -154,6 +154,7 @@ class _insertPassword extends StatelessWidget {
   }
 }
 
+///비밀번호 입력칸
 class _findPassword extends StatelessWidget {
   const _findPassword({super.key});
 
@@ -191,6 +192,7 @@ class _Or extends StatelessWidget {
   }
 }
 
+///로그인 버튼 파라미터
 class LoginButton_Child extends StatelessWidget {
   const LoginButton_Child({super.key});
 
@@ -207,6 +209,7 @@ class LoginButton_Child extends StatelessWidget {
   }
 }
 
+///카카오톡으로 로그인
 class KakaoLogin_Child extends StatelessWidget {
   const KakaoLogin_Child({super.key});
 
@@ -232,6 +235,7 @@ class KakaoLogin_Child extends StatelessWidget {
   }
 }
 
+///구글로 로그인
 class GoogleLogin_Child extends StatelessWidget {
   const GoogleLogin_Child({super.key});
 
