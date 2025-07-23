@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CreateAccountScreen extends StatelessWidget {
-  const CreateAccountScreen({super.key});
+class CreateAccountscreen extends StatelessWidget {
+  const CreateAccountscreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +17,7 @@ class CreateAccountScreen extends StatelessWidget {
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 35, left: 16, bottom: 25),
@@ -53,6 +54,31 @@ class CreateAccountScreen extends StatelessWidget {
                 ),
               ),
             ),
+
+            Expanded(child: SizedBox()),
+
+            ///동일한 코드 반복
+            Padding(
+              padding: const EdgeInsets.only(bottom: 55, left: 17, right: 17),
+              child: Container(
+                width: double.infinity,
+                height: 68,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0XFFFF4E6B),
+                  ),
+                  onPressed: Next_Button_Pressed,
+                  child: Text(
+                    '다음',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -63,3 +89,5 @@ class CreateAccountScreen extends StatelessWidget {
 Close_Button_Pressed() {}
 
 Arrow_Back_ios_Pressed() {}
+
+Next_Button_Pressed() {}

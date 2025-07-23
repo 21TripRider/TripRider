@@ -14,7 +14,7 @@ class Welcomescreen extends StatelessWidget {
           children: [
             Container(child: Image.asset('asset/image/logo.png')),
 
-            SizedBox(height: 30,),
+            SizedBox(height: 30),
 
             Container(
               child: Column(
@@ -30,29 +30,32 @@ class Welcomescreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 150,),
+            SizedBox(height: 150),
 
+            ///동일한 코드 반복
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.only(bottom: 55, left: 17, right: 17),
               child: Container(
+                width: double.infinity,
+                height: 68,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 25),
                     backgroundColor: Color(0XFFFF4E6B),
                   ),
                   onPressed: onPressed_Login,
                   child: Text(
-                    '로그인',
+                    '다음',
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               ),
             ),
 
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
