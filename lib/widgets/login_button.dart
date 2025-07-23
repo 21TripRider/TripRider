@@ -27,7 +27,7 @@ class LoginButton extends StatelessWidget {
         height: 68,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: color),
-          onPressed: onPressed_Login(),
+          onPressed: onPressed_Login,
           child: child,
         ),
       ),

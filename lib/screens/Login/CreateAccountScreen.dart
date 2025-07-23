@@ -32,7 +32,7 @@ class CreateAccountscreen extends StatelessWidget {
               L: 17,
               R: 17,
               child: Next_Widget_Child(),
-              color: Color(0XFFFF4E6B),
+              color: Color(0xFFFF4E6B),
             ),
           ],
         ),
@@ -54,6 +54,7 @@ class _InsertEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 35, left: 16, bottom: 25),
