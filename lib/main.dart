@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:triprider/screens/Login/CreateAccountScreen.dart';
 import 'package:triprider/screens/Login/LoginScreen.dart';
 import 'package:triprider/screens/Login/WelcomeScreen.dart';
+import 'package:triprider/screens/home/HomeScreen.dart';
 
 void main() {
   runApp(MaterialApp(home: CreateAccountscreen()));
