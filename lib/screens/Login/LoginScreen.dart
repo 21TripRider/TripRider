@@ -9,12 +9,10 @@ class Loginscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(left: 106),
-          child: Text(
-            '로그인',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-          ),
+        centerTitle: true,
+        title: Text(
+          '로그인',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
         ),
         leading: IconButton(
           onPressed: Arrow_Back_ios_Pressed,
