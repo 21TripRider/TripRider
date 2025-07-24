@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:triprider/widgets/login_button.dart';
+import 'package:triprider/widgets/Login_Screen_Button.dart';
 
 class Loginscreen extends StatelessWidget {
   const Loginscreen({super.key});
@@ -29,7 +29,7 @@ class Loginscreen extends StatelessWidget {
 
           _findPassword(),
 
-          LoginButton(
+          LoginScreenButton(
             T: 20,
             B: 80,
             L: 17,
@@ -41,7 +41,7 @@ class Loginscreen extends StatelessWidget {
           _Or(),
 
           ///동일한 코드 반복 80 30 17 17
-          LoginButton(
+          LoginScreenButton(
             T: 80,
             B: 30,
             L: 17,
@@ -51,7 +51,7 @@ class Loginscreen extends StatelessWidget {
           ),
 
           ///동일한 코드 반복 0,30,17,17
-          LoginButton(
+          LoginScreenButton(
             T: 0,
             B: 30,
             L: 17,
@@ -71,7 +71,7 @@ Close_Button_Pressed() {}
 
 Password_Search_Pressed() {}
 
-onPressed_Login() {}
+Login_Pressed() {}
 
 Kakao_Login_Pressed() {}
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/Login/LoginScreen.dart';
-import 'package:triprider/widgets/login_button.dart';
+import 'package:triprider/widgets/Login_Screen_Button.dart';
 
 class Welcomescreen extends StatelessWidget {
   const Welcomescreen({super.key});
@@ -19,11 +19,11 @@ class Welcomescreen extends StatelessWidget {
             SizedBox(height: 150),
 
             ///동일한 코드 반복
-            LoginButton(
+            LoginScreenButton(
               T: 0,
               B: 0,
-              L: 0,
-              R: 0,
+              L: 17,
+              R: 17,
               child: LoginButton_Child(),
               color: Color(0XFFFF426B),
             ),
@@ -38,9 +38,9 @@ class Welcomescreen extends StatelessWidget {
   }
 }
 
-onPressed_Login() {}
+Login_Pressed() {}
 
-onPressed_Account() {}
+Account_Pressed() {}
 
 ///첫 로고 화면
 class TripRider_logo extends StatelessWidget {
@@ -85,12 +85,12 @@ class Account_Button extends StatelessWidget {
         height: 68,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-          onPressed: onPressed_Login,
+          onPressed: Login_Pressed,
           child: Text(
             '회원가입',
             style: TextStyle(
               color: Colors.black,
-              fontSize: 15,
+              fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
           ),

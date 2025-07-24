@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:triprider/widgets/Next_Widget_Child.dart';
-import 'package:triprider/widgets/login_button.dart';
+import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
+import 'package:triprider/widgets/Login_Screen_Button.dart';
 
 class CreateAccountscreen extends StatelessWidget {
   const CreateAccountscreen({super.key});
@@ -26,7 +26,7 @@ class CreateAccountscreen extends StatelessWidget {
             Expanded(child: SizedBox()),
 
             ///동일한 코드 반복 0,55,17,17,다음, 0XFF4E6B
-            LoginButton(
+            LoginScreenButton(
               T: 0,
               B: 55,
               L: 17,
@@ -95,5 +95,3 @@ class _InsertEmail extends StatelessWidget {
     );
   }
 }
-
-

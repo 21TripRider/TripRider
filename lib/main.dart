@@ -5,5 +5,5 @@ import 'package:triprider/screens/Login/LoginScreen.dart';
 import 'package:triprider/screens/Login/WelcomeScreen.dart';
 
 void main() {
-  runApp(MaterialApp(home: Loginscreen()));
+  runApp(MaterialApp(home: CreateAccountscreen()));
 }
