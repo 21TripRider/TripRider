@@ -10,7 +10,7 @@ class Next_Widget_Child extends StatelessWidget {
     return Text(
       '다음',
       style: TextStyle(
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: FontWeight.w600,
         color: Colors.white,
       ),

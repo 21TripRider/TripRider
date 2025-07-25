@@ -22,11 +22,7 @@ class Homescreen extends StatelessWidget {
   }
 }
 
-
-Rent_Pressed(){
-  
-}
-
+Rent_Pressed() {}
 
 ///날씨 위젯
 class _Weather extends StatelessWidget {
@@ -35,7 +31,7 @@ class _Weather extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.lightBlueAccent,
@@ -81,7 +77,10 @@ class _Weather extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("강수확률", style: TextStyle(color: Colors.white, fontSize: 14)),
+                Text(
+                  "강수확률",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
                 Row(
                   children: [
                     Text(
@@ -135,7 +134,6 @@ class _Weather extends StatelessWidget {
   }
 }
 
-
 ///랜트 위젯
 class _Rent extends StatelessWidget {
   const _Rent({super.key});
@@ -143,12 +141,13 @@ class _Rent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      /// child: ElevatedButton(onPressed: Rent_Pressed(), child: Image.asset()),
+      child: IconButton(
+        onPressed: Rent_Pressed,
+        icon: Image.asset('asset/image/RentCar.png'),
+      ),
     );
   }
 }
-
-
 
 ///최근 주행 기록 위젯
 class _Record extends StatelessWidget {
@@ -156,6 +155,76 @@ class _Record extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        padding: const EdgeInsets.all(20.0),
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '최근 주행 기록',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+
+                Row(
+                  children: [
+                    Text(
+                      '57',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+
+                    Text(
+                      'KM',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            Row(
+              children: [
+                Container(
+                  width: 90,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Color(0XFFFFF4F6),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '2025.07.23',
+                      style: TextStyle(
+                        color: Color(0XFFFF4E6B),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            Divider(color: Colors.grey),
+
+            Row(),
+          ],
+        ),
+      ),
+    );
   }
 }
