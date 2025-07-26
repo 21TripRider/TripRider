@@ -17,29 +17,7 @@ class Homescreen extends StatelessWidget {
         ],
       ),
 
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              onPressed: Home_Button_Pressed,
-              icon: Icon(Icons.home_filled),
-            ),
-            IconButton(
-              onPressed: Course_Button_Pressed,
-              icon: Icon(Icons.motorcycle_sharp),
-            ),
-            IconButton(
-              onPressed: Ridergram_Button_Pressed,
-              icon: Icon(Icons.message),
-            ),
-            IconButton(
-              onPressed: Mypage_Button_Pressed,
-              icon: Icon(Icons.person),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: _BottomIcons,
     );
   }
 }
@@ -295,3 +273,27 @@ class _Record extends StatelessWidget {
     );
   }
 }
+
+BottomAppBar _BottomIcons = BottomAppBar(
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      IconButton(
+        onPressed: Home_Button_Pressed,
+        icon: Icon(Icons.home_filled, size: 40),
+      ),
+      IconButton(
+        onPressed: Course_Button_Pressed,
+        icon: Icon(Icons.motorcycle_sharp, size: 40),
+      ),
+      IconButton(
+        onPressed: Ridergram_Button_Pressed,
+        icon: Icon(Icons.message, size: 40),
+      ),
+      IconButton(
+        onPressed: Mypage_Button_Pressed,
+        icon: Icon(Icons.person, size: 40),
+      ),
+    ],
+  ),
+);
