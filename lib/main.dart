@@ -9,5 +9,5 @@ import 'package:triprider/screens/Login/password_input_screen.dart';
 import 'package:triprider/screens/home/HomeScreen.dart';
 
 void main() {
-  runApp(MaterialApp(home: NicknameInputScreen()));
+  runApp(MaterialApp(home: Homescreen()));
 }

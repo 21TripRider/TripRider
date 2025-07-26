@@ -7,14 +7,36 @@ class Homescreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: [_Weather(), _Rent(), _Record()]),
+      body: ListView(
+        children: [
+          _Weather(),
+          SizedBox(height: 15),
+          _Rent(),
+          SizedBox(height: 15),
+          _Record(),
+        ],
+      ),
 
       bottomNavigationBar: BottomAppBar(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            /// IconButton(onPressed: onPressed, icon: icon)
+            IconButton(
+              onPressed: Home_Button_Pressed,
+              icon: Icon(Icons.home_filled),
+            ),
+            IconButton(
+              onPressed: Course_Button_Pressed,
+              icon: Icon(Icons.motorcycle_sharp),
+            ),
+            IconButton(
+              onPressed: Ridergram_Button_Pressed,
+              icon: Icon(Icons.message),
+            ),
+            IconButton(
+              onPressed: Mypage_Button_Pressed,
+              icon: Icon(Icons.person),
+            ),
           ],
         ),
       ),
@@ -23,6 +45,10 @@ class Homescreen extends StatelessWidget {
 }
 
 Rent_Pressed() {}
+Home_Button_Pressed() {}
+Course_Button_Pressed() {}
+Ridergram_Button_Pressed() {}
+Mypage_Button_Pressed() {}
 
 ///날씨 위젯
 class _Weather extends StatelessWidget {
@@ -210,18 +236,59 @@ class _Record extends StatelessWidget {
                   child: Center(
                     child: Text(
                       '2025.07.23',
-                      style: TextStyle(
-                        color: Color(0XFFFF4E6B),
-                      ),
+                      style: TextStyle(color: Color(0XFFFF4E6B)),
+                    ),
+                  ),
+                ),
+
+                Container(
+                  width: 140,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Color(0XFFFFF4F6),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '제주도 제주시 한강면',
+                      style: TextStyle(color: Color(0XFFFF4E6B)),
                     ),
                   ),
                 ),
               ],
             ),
 
+            SizedBox(height: 15),
+
             Divider(color: Colors.grey),
 
-            Row(),
+            SizedBox(height: 15),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Text('평균 속도', style: TextStyle(color: Colors.grey)),
+                    Text('53KM', style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+
+                Column(
+                  children: [
+                    Text('최고 속도', style: TextStyle(color: Colors.grey)),
+                    Text('82 KM', style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+
+                Column(
+                  children: [
+                    Text('주행 시간', style: TextStyle(color: Colors.grey)),
+                    Text('01:04:32', style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
       ),
