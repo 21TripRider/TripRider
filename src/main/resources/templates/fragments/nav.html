@@ -1,0 +1,17 @@
+<!-- templates/fragments/nav.html -->
+<div th:fragment="bottom(activeMenu)">
+    <div class="bottom-nav" style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #fff; border-top: 1px solid #ddd; display: flex; justify-content: space-around; align-items: center;">
+        <a th:href="@{/home}" th:classappend="${activeMenu == 'home'} ? 'active'" style="text-decoration: none; color: #333; text-align: center; font-size: 14px;">
+            <i class="fas fa-home" style="font-size: 20px;"></i><br>홈
+        </a>
+        <a th:href="@{/travel}" th:classappend="${activeMenu == 'travel'} ? 'active'" style="text-decoration: none; color: #333; text-align: center; font-size: 14px;">
+            <i class="fas fa-map" style="font-size: 20px;"></i><br>여행
+        </a>
+        <a th:href="@{/board}" th:classappend="${activeMenu == 'board'} ? 'active'" style="text-decoration: none; color: #333; text-align: center; font-size: 14px;">
+            <i class="fas fa-comments" style="font-size: 20px;"></i><br>게시판
+        </a>
+        <a th:href="@{/mypage}" th:classappend="${activeMenu == 'mypage'} ? 'active'" style="text-decoration: none; color: #333; text-align: center; font-size: 14px;">
+            <i class="fas fa-user" style="font-size: 20px;"></i><br>마이페이지
+        </a>
+    </div>
+</div>

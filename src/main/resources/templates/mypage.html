@@ -1,0 +1,35 @@
+<!-- templates/mypage.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { margin-bottom: 70px; }
+        .content { padding: 20px; }
+    </style>
+</head>
+<body>
+<div class="content">
+    <h3>👤 마이페이지</h3>
+    <form th:action="@{/mypage}" method="post">
+        <div class="form-group">
+            <label>이메일</label>
+            <p th:text="${user.email}">email@example.com</p>
+        </div>
+        <div class="form-group">
+            <label>닉네임</label>
+            <input type="text" name="nickname" class="form-control" th:value="${user.nickname}">
+        </div>
+        <div class="form-group">
+            <label>뱃지</label>
+            <input type="text" name="badge" class="form-control" th:value="${user.badge}">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">수정</button>
+    </form>
+</div>
+<div th:replace="~{fragments/nav :: bottom('mypage')}"></div>
+</body>
+</html>

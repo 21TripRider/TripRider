@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>새 게시글 작성</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+</head>
+<body class="p-4">
+<h3>📸 새 게시글 작성</h3>
+<form action="/board" method="post">
+    <div class="form-group">
+        <label>사진/영상 URL</label>
+        <input type="text" class="form-control" name="imageUrl" placeholder="이미지 URL">
+    </div>
+    <div class="form-group">
+        <label>문구 입력</label>
+        <textarea class="form-control" name="content" rows="4" placeholder="문구를 입력하세요..."></textarea>
+    </div>
+    <div class="form-group">
+        <label>위치 추가</label>
+        <input type="text" class="form-control" name="location" placeholder="예: 제주시">
+    </div>
+    <div class="form-group">
+        <label>해시태그</label>
+        <input type="text" class="form-control" name="hashtags" placeholder="#여행 #라이딩">
+    </div>
+    <button type="submit" class="btn btn-primary">공유</button>
+</form>
+</body>
+</html>

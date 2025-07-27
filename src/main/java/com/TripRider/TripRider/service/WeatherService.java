@@ -4,6 +4,8 @@ import com.TripRider.TripRider.dto.SimpleWeatherResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +21,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WeatherService {
 
+    private static final Logger log = LoggerFactory.getLogger(WeatherService.class);
+
     @Value("${weather.api.base-url}")
     private String baseUrl;
 
@@ -31,7 +35,7 @@ public class WeatherService {
             "WSD", "풍속",
             "SKY", "하늘 상태",
             "PTY", "강수 형태",
-            "POP", "강수 확률",
+            "POP", "강수확률",
             "PCP", "강수량",
             "SNO", "적설량"
     );
@@ -109,11 +113,36 @@ public class WeatherService {
                 resultMap.put(regionName, weatherList);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                log.warn("[" + regionName + "] 날씨 정보 조회 실패: {}", e.getMessage());
                 resultMap.put(regionName, List.of());
             }
         }
 
         return resultMap;
     }
+
+    /*
+    기온, 강수확률 메서드
+     */
+    public Map<String, String> getSimpleWeather(String region) {
+        Map<String, List<SimpleWeatherResponse>> allWeather = getAllJejuWeather();
+        List<SimpleWeatherResponse> regionWeather = allWeather.getOrDefault(region, List.of());
+
+        String temp = null;
+        String rain = null;
+
+        for (SimpleWeatherResponse response : regionWeather) {
+            if ("기온".equals(response.getCategory())) {
+                temp = response.getFcstValue();
+            } else if ("강수확률".equals(response.getCategory())) {
+                rain = response.getFcstValue();
+            }
+        }
+
+        Map<String, String> result = new HashMap<>();
+        result.put("temp", temp);
+        result.put("rain", rain);
+        return result;
+    }
+
 }

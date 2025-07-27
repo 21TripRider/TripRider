@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,10 +41,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .password(provider.toUpperCase() + "_LOGIN")  // 소셜 로그인용 더미 비밀번호
                         .build()));
 
+        Map<String, Object> modifiedAttributes = new HashMap<>(attributes);
+        modifiedAttributes.put("email", email);
+
         return new DefaultOAuth2User(
                 List.of(new SimpleGrantedAuthority("user")),
                 attributes,
-                userNameAttributeName
+                "id"
         );
     }
 

@@ -19,4 +19,9 @@ public class WeatherController {
     public Map<String, List<SimpleWeatherResponse>> getJejuWeather() {
         return weatherService.getAllJejuWeather();
     }
+
+    @GetMapping("/jeju-weather")
+    public Map<String, String> getJejuSimpleWeather() {
+        return weatherService.getSimpleWeather("제주시");
+    }
 }

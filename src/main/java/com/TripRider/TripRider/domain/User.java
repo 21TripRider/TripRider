@@ -29,6 +29,12 @@ public class User implements UserDetails { // UserDetails를 상속받아 인증
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name = "badge")
+    private String badge;
+
     @Builder
     public User(String email, String password, String auth) {
         this.email = email;
@@ -74,5 +80,11 @@ public class User implements UserDetails { // UserDetails를 상속받아 인증
     @Override
     public boolean isEnabled(){
         return true; // true -> 사용 가능
+    }
+
+    // 프로필 업데이트
+    public void updateProfile(String nickname, String badge) {
+        this.nickname = nickname;
+        this.badge = badge;
     }
 }

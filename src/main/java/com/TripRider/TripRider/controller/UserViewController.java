@@ -5,6 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class UserViewController {
+
+    @GetMapping("/")
+    public String root() {
+        return "home"; // 또는 "login"으로 설정해도 됨
+    }
+
     @GetMapping("/login")
     public String login(){
         return "login";

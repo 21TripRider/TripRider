@@ -28,7 +28,7 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
             scope: profile_nickname, account_email
-            client-name: Kakao
+            client-name: Kakao`
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
