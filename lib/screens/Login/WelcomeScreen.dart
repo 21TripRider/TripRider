@@ -1,11 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:triprider/screens/Login/Email_input_screen.dart';
 import 'package:triprider/screens/Login/LoginScreen.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 
-class Welcomescreen extends StatelessWidget {
+class Welcomescreen extends StatefulWidget {
   const Welcomescreen({super.key});
 
+  @override
+  State<Welcomescreen> createState() => _WelcomescreenState();
+}
+
+class _WelcomescreenState extends State<Welcomescreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,29 +24,37 @@ class Welcomescreen extends StatelessWidget {
 
             SizedBox(height: 150),
 
-            ///동일한 코드 반복
-            LoginScreenButton(
-              T: 0,
-              B: 0,
-              L: 17,
-              R: 17,
-              child: LoginButton_Child(),
-              color: Color(0XFFFF426B),
-            ),
+            Login_Button(onPressed: Login_Pressed),
 
             SizedBox(height: 20),
 
-            Account_Button(),
+            Account_Button(onPressed: Account_Pressed),
           ],
         ),
       ),
     );
   }
+
+  Login_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return Loginscreen();
+        },
+      ),
+    );
+  }
+
+  Account_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return EmailInputScreen();
+        },
+      ),
+    );
+  }
 }
-
-Login_Pressed() {}
-
-Account_Pressed() {}
 
 ///첫 로고 화면
 class TripRider_logo extends StatelessWidget {
@@ -72,9 +86,31 @@ class TripRider_logo extends StatelessWidget {
   }
 }
 
+///로그인 버튼
+class Login_Button extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const Login_Button({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return LoginScreenButton(
+      T: 0,
+      B: 0,
+      L: 17,
+      R: 17,
+      child: LoginButton_Child(),
+      color: Color(0XFFFF426B),
+      onPressed: onPressed,
+    );
+  }
+}
+
 ///회원가입 버튼
 class Account_Button extends StatelessWidget {
-  const Account_Button({super.key});
+  final VoidCallback onPressed;
+
+  const Account_Button({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +121,7 @@ class Account_Button extends StatelessWidget {
         height: 68,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-          onPressed: Login_Pressed,
+          onPressed: onPressed,
           child: Text(
             '회원가입',
             style: TextStyle(

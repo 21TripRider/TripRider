@@ -2,9 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 
-class Loginscreen extends StatelessWidget {
+class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
 
+  @override
+  State<Loginscreen> createState() => _LoginscreenState();
+}
+
+class _LoginscreenState extends State<Loginscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +28,11 @@ class Loginscreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _insertEmail(),
+          _insertEmail(onPressed: Close_Button_Pressed),
 
-          _insertPassword(),
+          _insertPassword(onPressed: Close_Button_Pressed),
 
-          _findPassword(),
+          _findPassword(onPressed: Password_Search_Pressed),
 
           LoginScreenButton(
             T: 20,
@@ -36,6 +41,7 @@ class Loginscreen extends StatelessWidget {
             R: 17,
             child: LoginButton_Child(),
             color: Color(0XFFFF4E6B),
+            onPressed: () {},
           ),
 
           _Or(),
@@ -48,6 +54,7 @@ class Loginscreen extends StatelessWidget {
             R: 17,
             child: KakaoLogin_Child(),
             color: Colors.yellow,
+            onPressed: () {},
           ),
 
           ///동일한 코드 반복 0,30,17,17
@@ -58,28 +65,33 @@ class Loginscreen extends StatelessWidget {
             R: 17,
             child: GoogleLogin_Child(),
             color: Colors.white,
+            onPressed: () {},
           ),
         ],
       ),
     );
   }
+
+  Arrow_Back_ios_Pressed() {
+    Navigator.of(context).pop();
+  }
+
+  Close_Button_Pressed() {}
+
+  Password_Search_Pressed() {}
+
+  Login_Pressed() {}
+
+  Kakao_Login_Pressed() {}
+
+  Google_Login_Pressed() {}
 }
-
-Arrow_Back_ios_Pressed() {}
-
-Close_Button_Pressed() {}
-
-Password_Search_Pressed() {}
-
-Login_Pressed() {}
-
-Kakao_Login_Pressed() {}
-
-Google_Login_Pressed() {}
 
 ///이메일 입력 위젯
 class _insertEmail extends StatelessWidget {
-  const _insertEmail({super.key});
+  final VoidCallback onPressed;
+
+  const _insertEmail({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +111,7 @@ class _insertEmail extends StatelessWidget {
               suffixIcon: Container(
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: Close_Button_Pressed,
+                  onPressed: onPressed,
                   icon: Icon(Icons.close),
                 ),
               ),
@@ -116,7 +128,9 @@ class _insertEmail extends StatelessWidget {
 
 ///비밀번호 입력 위젯
 class _insertPassword extends StatelessWidget {
-  const _insertPassword({super.key});
+  final VoidCallback onPressed;
+
+  const _insertPassword({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +150,7 @@ class _insertPassword extends StatelessWidget {
               suffixIcon: Container(
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: Close_Button_Pressed,
+                  onPressed: onPressed,
                   icon: Icon(Icons.close),
                 ),
               ),
@@ -154,16 +168,14 @@ class _insertPassword extends StatelessWidget {
 
 ///비밀번호 입력칸
 class _findPassword extends StatelessWidget {
-  const _findPassword({super.key});
+  final VoidCallback onPressed;
+  const _findPassword({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 300),
-      child: TextButton(
-        onPressed: Password_Search_Pressed,
-        child: Text('비밀번호 찾기'),
-      ),
+      child: TextButton(onPressed: onPressed, child: Text('비밀번호 찾기')),
     );
   }
 }

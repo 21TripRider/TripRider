@@ -4,9 +4,14 @@ import 'package:triprider/screens/Login/Email_input_screen.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
 
-class ConfirmPasswordScreen extends StatelessWidget {
+class ConfirmPasswordScreen extends StatefulWidget {
   const ConfirmPasswordScreen({super.key});
 
+  @override
+  State<ConfirmPasswordScreen> createState() => _ConfirmPasswordScreenState();
+}
+
+class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,20 +23,41 @@ class ConfirmPasswordScreen extends StatelessWidget {
       ),
 
       body: Column(
-          children: [
-            _ConfirmPassword(),
-            
-            Expanded(child: SizedBox()),
-            
-            LoginScreenButton(T: 0, B: 55, L: 17, R: 17, child: Next_Widget_Child(), color: Color(0XFFFF4E6B))
-          ],
+        children: [
+          _ConfirmPassword(onPressed: Close_Button_Pressed,),
+
+          Expanded(child: SizedBox()),
+
+          LoginScreenButton(
+            T: 0,
+            B: 55,
+            L: 17,
+            R: 17,
+            child: Next_Widget_Child(),
+            color: Color(0XFFFF4E6B),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
+
+  Close_Button_Pressed() {
+
+  }
+
+  Arrow_Back_ios_Pressed() {
+    Navigator.of(context).pop();
+  }
+
+  Next_Button_Pressed() {}
 }
 
+
 class _ConfirmPassword extends StatelessWidget {
-  const _ConfirmPassword({super.key});
+  final VoidCallback onPressed;
+
+  const _ConfirmPassword({super.key,required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +85,7 @@ class _ConfirmPassword extends StatelessWidget {
               suffixIcon: Container(
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: Close_Button_Pressed,
+                  onPressed: onPressed,
                   icon: Icon(Icons.close),
                 ),
               ),

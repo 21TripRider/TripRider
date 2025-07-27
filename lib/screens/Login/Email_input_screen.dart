@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 
-class EmailInputScreen extends StatelessWidget {
+class EmailInputScreen extends StatefulWidget {
   const EmailInputScreen({super.key});
 
+  @override
+  State<EmailInputScreen> createState() => _EmailInputScreenState();
+}
+
+class _EmailInputScreenState extends State<EmailInputScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +26,7 @@ class EmailInputScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            _InputEmail(),
+            _InputEmail(onPressed: Close_Button_Pressed,),
 
             Expanded(child: SizedBox()),
 
@@ -33,23 +38,32 @@ class EmailInputScreen extends StatelessWidget {
               R: 17,
               child: Next_Widget_Child(),
               color: Color(0xFFFF4E6B),
+              onPressed: () {},
             ),
           ],
         ),
       ),
     );
   }
+
+  Close_Button_Pressed() {
+
+  }
+
+  Arrow_Back_ios_Pressed() {
+    Navigator.of(context).pop();
+  }
+
+  Next_Button_Pressed() {}
 }
 
-Close_Button_Pressed() {}
 
-Arrow_Back_ios_Pressed() {}
-
-Next_Button_Pressed() {}
 
 ///이메일 입력창
 class _InputEmail extends StatelessWidget {
-  const _InputEmail({super.key});
+  final VoidCallback onPressed;
+
+  const _InputEmail({super.key,required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +94,7 @@ class _InputEmail extends StatelessWidget {
               suffixIcon: Container(
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: Close_Button_Pressed,
+                  onPressed: onPressed,
                   icon: Icon(Icons.close),
                 ),
               ),

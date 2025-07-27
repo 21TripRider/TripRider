@@ -4,9 +4,14 @@ import 'package:triprider/screens/Login/Email_input_screen.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
 
-class PasswordInputScreen extends StatelessWidget {
+class PasswordInputScreen extends StatefulWidget {
   const PasswordInputScreen({super.key});
 
+  @override
+  State<PasswordInputScreen> createState() => _PasswordInputScreenState();
+}
+
+class _PasswordInputScreenState extends State<PasswordInputScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +25,7 @@ class PasswordInputScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _InputPassword(),
+          _InputPassword(onPressed: Close_Button_Pressed),
 
           _PasswordCondition(),
 
@@ -33,15 +38,26 @@ class PasswordInputScreen extends StatelessWidget {
             R: 17,
             child: Next_Widget_Child(),
             color: Color(0XFFFF4E6B),
+            onPressed: () {},
           ),
         ],
       ),
     );
   }
+
+  Close_Button_Pressed() {}
+
+  Arrow_Back_ios_Pressed() {
+    Navigator.of(context).pop();
+  }
+
+  Next_Button_Pressed() {}
 }
 
 class _InputPassword extends StatelessWidget {
-  const _InputPassword({super.key});
+  final VoidCallback onPressed;
+
+  const _InputPassword({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +85,7 @@ class _InputPassword extends StatelessWidget {
               suffixIcon: Container(
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: Close_Button_Pressed,
+                  onPressed: onPressed,
                   icon: Icon(Icons.close),
                 ),
               ),

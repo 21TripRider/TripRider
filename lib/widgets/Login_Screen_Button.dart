@@ -7,6 +7,7 @@ class LoginScreenButton extends StatelessWidget {
   final double T, B, L, R;
   final Widget child;
   final Color color;
+  final VoidCallback onPressed;
 
   const LoginScreenButton({
     super.key,
@@ -15,7 +16,8 @@ class LoginScreenButton extends StatelessWidget {
     required this.L,
     required this.R,
     required this.child,
-    required this.color
+    required this.color,
+    required this.onPressed,
   });
 
   @override
@@ -27,7 +29,7 @@ class LoginScreenButton extends StatelessWidget {
         height: 68,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: color),
-          onPressed: Login_Pressed,
+          onPressed: onPressed,
           child: child,
         ),
       ),
