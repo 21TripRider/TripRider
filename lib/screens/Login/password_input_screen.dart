@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/Login/Email_input_screen.dart';
+import 'package:triprider/screens/Login/confirm_password_screen.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
 
@@ -17,7 +18,7 @@ class _PasswordInputScreenState extends State<PasswordInputScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: Arrow_Back_ios_Pressed(),
+          onPressed: Arrow_Back_ios_Pressed,
           icon: Icon(Icons.arrow_back_ios_new),
         ),
       ),
@@ -38,7 +39,7 @@ class _PasswordInputScreenState extends State<PasswordInputScreen> {
             R: 17,
             child: Next_Widget_Child(),
             color: Color(0XFFFF4E6B),
-            onPressed: () {},
+            onPressed: Next_Button_Pressed,
           ),
         ],
       ),
@@ -51,7 +52,15 @@ class _PasswordInputScreenState extends State<PasswordInputScreen> {
     Navigator.of(context).pop();
   }
 
-  Next_Button_Pressed() {}
+  Next_Button_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return ConfirmPasswordScreen();
+        },
+      ),
+    );
+  }
 }
 
 class _InputPassword extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:triprider/screens/Login/LoginScreen.dart';
 
 
-class LoginScreenButton extends StatelessWidget {
+class LoginScreenButton extends StatefulWidget {
   final double T, B, L, R;
   final Widget child;
   final Color color;
@@ -21,16 +21,21 @@ class LoginScreenButton extends StatelessWidget {
   });
 
   @override
+  State<LoginScreenButton> createState() => _LoginScreenButtonState();
+}
+
+class _LoginScreenButtonState extends State<LoginScreenButton> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: T, bottom: B, left: L, right: R),
+      padding: EdgeInsets.only(top: widget.T, bottom: widget.B, left: widget.L, right: widget.R),
       child: Container(
         width: double.infinity,
         height: 68,
         child: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: color),
-          onPressed: onPressed,
-          child: child,
+          style: ElevatedButton.styleFrom(backgroundColor: widget.color),
+          onPressed: widget.onPressed,
+          child: widget.child,
         ),
       ),
     );

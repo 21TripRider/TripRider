@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:triprider/screens/Login/password_input_screen.dart';
 import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 
@@ -38,7 +39,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
               R: 17,
               child: Next_Widget_Child(),
               color: Color(0xFFFF4E6B),
-              onPressed: () {},
+              onPressed: Next_Button_Pressed,
             ),
           ],
         ),
@@ -54,7 +55,15 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
     Navigator.of(context).pop();
   }
 
-  Next_Button_Pressed() {}
+  Next_Button_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return PasswordInputScreen();
+        },
+      ),
+    );
+  }
 }
 
 
