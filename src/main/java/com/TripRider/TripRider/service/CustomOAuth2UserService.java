@@ -46,8 +46,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         return new DefaultOAuth2User(
                 List.of(new SimpleGrantedAuthority("user")),
-                attributes,
-                "id"
+                modifiedAttributes, //
+                "email"
         );
     }
 
