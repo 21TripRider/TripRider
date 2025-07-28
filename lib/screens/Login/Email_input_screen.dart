@@ -12,6 +12,8 @@ class EmailInputScreen extends StatefulWidget {
 }
 
 class _EmailInputScreenState extends State<EmailInputScreen> {
+  final TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,10 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            _InputEmail(onPressed: Close_Button_Pressed,),
+            _InputEmail(
+              onPressed: Close_Button_Pressed,
+              controller: emailController,
+            ),
 
             Expanded(child: SizedBox()),
 
@@ -47,32 +52,49 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
     );
   }
 
-  Close_Button_Pressed() {
-
-  }
+  Close_Button_Pressed() {}
 
   Arrow_Back_ios_Pressed() {
     Navigator.of(context).pop();
   }
 
   Next_Button_Pressed() {
+    String email = emailController.text.trim();
+
+    bool isValidEmail(String email) {
+      final RegExp emailReg = RegExp(
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+      );
+      return emailReg.hasMatch(email);
+    }
+
+    if (!isValidEmail(email)) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("유효한 이메일 형식을 입력해주세요.")));
+      return; //
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
-          return PasswordInputScreen();
+          return PasswordInputScreen(email: emailController.text.trim());
         },
       ),
     );
   }
 }
 
-
-
 ///이메일 입력창
 class _InputEmail extends StatelessWidget {
   final VoidCallback onPressed;
+  final TextEditingController controller;
 
-  const _InputEmail({super.key,required this.onPressed});
+  const _InputEmail({
+    super.key,
+    required this.onPressed,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +117,7 @@ class _InputEmail extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: TextField(
+            controller: controller,
             style: TextStyle(fontSize: 20),
             decoration: InputDecoration(
               hintText: 'abc123456@XXXXX.com',

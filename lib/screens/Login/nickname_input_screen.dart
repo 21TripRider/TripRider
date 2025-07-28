@@ -5,14 +5,45 @@ import 'package:triprider/screens/Login/LoginScreen.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+Future<bool> registerUser(
+  String email,
+  String password,
+  String nickname,
+) async {
+  final url = Uri.parse("https://your.api/signup"); // ← 실제 API 주소로 바꿔줘
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      'email': email,
+      'password': password,
+      'nickname': nickname,
+    }),
+  );
+
+  return response.statusCode == 200;
+}
+
 class NicknameInputScreen extends StatefulWidget {
-  const NicknameInputScreen({super.key});
+  final String email; // 이전 화면에서 전달받을 이메일
+  final String originalPassword; // 이전 화면에서 전달받을 비밀번호
+
+  const NicknameInputScreen({
+    super.key,
+    required this.email,
+    required this.originalPassword,
+  });
 
   @override
   State<NicknameInputScreen> createState() => _NicknameInputScreenState();
 }
 
 class _NicknameInputScreenState extends State<NicknameInputScreen> {
+  final TextEditingController nicknameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +56,10 @@ class _NicknameInputScreenState extends State<NicknameInputScreen> {
 
       body: Column(
         children: [
-          _ConfirmPassword(onPressed: Close_Button_Pressed,),
+          _ConfirmPassword(
+            onPressed: Close_Button_Pressed,
+            controller: nicknameController,
+          ),
 
           Expanded(child: SizedBox()),
 
@@ -43,30 +77,52 @@ class _NicknameInputScreenState extends State<NicknameInputScreen> {
     );
   }
 
-  Close_Button_Pressed() {
-
-  }
+  Close_Button_Pressed() {}
 
   Arrow_Back_ios_Pressed() {
     Navigator.of(context).pop();
   }
 
-  Next_Button_Pressed() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return Loginscreen();
-        },
-      ),
-    );
+  Next_Button_Pressed() async {
+    final nickname = nicknameController.text.trim();
+    final email = widget.email;
+    final password = widget.originalPassword;
+
+    if (nickname.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("닉네임을 입력해주세요.")));
+      return;
+    }
+
+    final success = await registerUser(email, password, nickname);
+
+    if (success) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return Loginscreen();
+          },
+        ),
+        (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("회원가입에 실패했습니다.")));
+    }
   }
 }
 
-
 class _ConfirmPassword extends StatelessWidget {
   final VoidCallback onPressed;
+  final TextEditingController controller;
 
-  const _ConfirmPassword({super.key,required this.onPressed});
+  const _ConfirmPassword({
+    super.key,
+    required this.onPressed,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +145,7 @@ class _ConfirmPassword extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: TextField(
+            controller: controller,
             style: TextStyle(fontSize: 20),
             decoration: InputDecoration(
               suffixIcon: Container(

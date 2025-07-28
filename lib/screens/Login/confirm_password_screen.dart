@@ -6,13 +6,22 @@ import 'package:triprider/widgets/Login_Screen_Button.dart';
 import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
 
 class ConfirmPasswordScreen extends StatefulWidget {
-  const ConfirmPasswordScreen({super.key});
+  final String email; // 이전 화면에서 전달받을 이메일
+  final String originalPassword; // 이전 화면에서 전달받을 비밀번호
+  const ConfirmPasswordScreen({
+    super.key,
+    required this.email,
+    required this.originalPassword,
+  });
 
   @override
   State<ConfirmPasswordScreen> createState() => _ConfirmPasswordScreenState();
 }
 
 class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +34,10 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
 
       body: Column(
         children: [
-          _ConfirmPassword(onPressed: Close_Button_Pressed,),
+          _ConfirmPassword(
+            onPressed: Close_Button_Pressed,
+            controller: confirmPasswordController,
+          ),
 
           Expanded(child: SizedBox()),
 
@@ -43,30 +55,42 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
     );
   }
 
-  Close_Button_Pressed() {
-
-  }
+  Close_Button_Pressed() {}
 
   Arrow_Back_ios_Pressed() {
     Navigator.of(context).pop();
   }
 
   Next_Button_Pressed() {
+    if (confirmPasswordController.text.trim() != widget.originalPassword) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("비밀번호가 일치하지 않습니다.")));
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
-          return NicknameInputScreen();
+          return NicknameInputScreen(
+            email: widget.email,
+            originalPassword: widget.originalPassword,
+          );
         },
       ),
     );
   }
 }
 
-
 class _ConfirmPassword extends StatelessWidget {
   final VoidCallback onPressed;
+  final TextEditingController controller;
 
-  const _ConfirmPassword({super.key,required this.onPressed});
+  const _ConfirmPassword({
+    super.key,
+    required this.onPressed,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +113,7 @@ class _ConfirmPassword extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: TextField(
+            controller: controller,
             style: TextStyle(fontSize: 20),
             decoration: InputDecoration(
               suffixIcon: Container(
