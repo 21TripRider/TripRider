@@ -19,11 +19,7 @@ public class PostService {
     private final UserRepository userRepository;
 
     // 게시글 저장
-    public void create(String content, String imageUrl, String location, String hashtags) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-
+    public void create(String content, String imageUrl, String location, String hashtags, User user) {
         Post post = Post.builder()
                 .user(user)
                 .content(content)
@@ -35,6 +31,7 @@ public class PostService {
 
         postRepository.save(post);
     }
+
 
     // 게시글 목록
     public List<Post> getAllPosts() {

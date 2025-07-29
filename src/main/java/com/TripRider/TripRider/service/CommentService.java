@@ -21,11 +21,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public void addComment(Long postId, String content) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-
+    public void addComment(Long postId, String content, User user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
 
@@ -38,6 +34,7 @@ public class CommentService {
 
         commentRepository.save(comment);
     }
+
 
     public List<Comment> getCommentsForPost(Long postId) {
         Post post = postRepository.findById(postId)
