@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/trip/Course_Card_zip/Course_Card1.dart';
 
+import 'Course_Card_zip/Course_Card2.dart';
+
 class RidingCourse extends StatelessWidget {
   const RidingCourse({super.key});
 
@@ -114,7 +116,7 @@ class Popular_Course extends StatelessWidget {
           child: PageView(
             children: [
               CourseCard1(favorite_Pressed: favorite_Pressed),
-              
+              CourseCard2(favorite_Pressed: favorite_Pressed),
             ],
           ),
         ),

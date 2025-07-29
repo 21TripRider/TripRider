@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CourseCard1 extends StatelessWidget {
+class CourseCard2 extends StatelessWidget {
   final VoidCallback favorite_Pressed;
 
-  const CourseCard1({super.key, required this.favorite_Pressed});
+  const CourseCard2({super.key, required this.favorite_Pressed});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class CourseCard1 extends StatelessWidget {
       child: Stack(
         children: [
           Image.asset(
-            'asset/image/courseview1.png',
+            'asset/image/courseview2.png',
             fit: BoxFit.cover,
             width: double.infinity,
             height: 350,
@@ -33,7 +33,7 @@ class CourseCard1 extends StatelessWidget {
 
             child: IconButton(
               onPressed: favorite_Pressed,
-              icon: Icon(Icons.favorite_border, color: Colors.white, size: 35),
+              icon: Icon(Icons.favorite_border,color: Colors.white,size: 35,),
             ),
           ),
 
@@ -62,18 +62,6 @@ class CourseCard1 extends StatelessWidget {
                     SizedBox(width: 4),
                     Text(
                       '128',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 15),
-
-                Row(
-                  children: [
-                    Icon(Icons.gps_fixed, color: Colors.white),
-                    Text(
-                      '제주특별자치도 제주시 한강면 신창리 1323',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ],
