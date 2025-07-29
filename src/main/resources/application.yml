@@ -7,11 +7,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create  # 또는 validate, 개발 중이라면 create 유지 가능
+    show-sql: true
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
+        archive.autodetection: none  # 🔥 외부 라이브러리 Entity 무시 설정
 
   security:
     oauth2:
@@ -21,14 +22,14 @@ spring:
             client-id: 316137395420-ig547fms4sva0jaoup5odgldfqhf36o4.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-            redirect-uri: "http://localhost:8080/login/oauth2/code/google"
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
           kakao:
             client-id: 471ee3eec0b9d8a5fc4eb86fb849e524
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             scope: profile_nickname, account_email
-            client-name: Kakao`
+            client-name: Kakao
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -40,7 +41,6 @@ weather:
   api:
     base-url: "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0"
     service-key: "B9lcEXU87CZ1bElz2TDsg24h3MrLRNIvSaS3U3tJadZevbVF15IegPFce577ni1sQSNvFEueuKIwO0wQcAd4tQ=="
-
 
 logging:
   level:

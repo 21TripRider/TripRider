@@ -5,31 +5,95 @@
     <meta charset="UTF-8">
     <title>마이페이지</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body { margin-bottom: 70px; }
-        .content { padding: 20px; }
+        body {
+            background-color: #f8f9fa;
+            margin-bottom: 70px;
+        }
+
+        .profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .btn-logout {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-<div class="content">
-    <h3>👤 마이페이지</h3>
+
+<div class="container profile-container text-center">
+    <h3><i class="fas fa-user-circle"></i> 마이페이지</h3>
+
+    <!-- 프로필 이미지 -->
+    <img th:src="${user.profileImage != null ? user.profileImage : '/images/default-profile.png'}"
+         alt="Profile Image" class="profile-image">
+    <form th:action="@{/mypage/profile-image}" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" class="form-control-file my-2" required>
+        <button type="submit" class="btn btn-sm btn-outline-primary">이미지 변경</button>
+    </form>
+
+    <hr>
+
+    <!-- 이메일 -->
+    <div class="form-group text-left">
+        <label>이메일</label>
+        <p th:text="${user.email}">email@example.com</p>
+    </div>
+
+    <!-- 닉네임 -->
     <form th:action="@{/mypage}" method="post">
-        <div class="form-group">
-            <label>이메일</label>
-            <p th:text="${user.email}">email@example.com</p>
-        </div>
-        <div class="form-group">
+        <div class="form-group text-left">
             <label>닉네임</label>
             <input type="text" name="nickname" class="form-control" th:value="${user.nickname}">
         </div>
-        <div class="form-group">
+
+        <!-- 뱃지 -->
+        <div class="form-group text-left">
             <label>뱃지</label>
             <input type="text" name="badge" class="form-control" th:value="${user.badge}">
         </div>
-        <button type="submit" class="btn btn-primary mt-3">수정</button>
+
+        <button type="submit" class="btn btn-primary btn-block">정보 수정</button>
+    </form>
+
+    <hr>
+
+    <!-- 한줄소개 -->
+    <div class="form-group text-left">
+        <label>한줄 소개</label>
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="mb-0" th:text="${user.intro != null ? user.intro : '한줄 소개가 없습니다.'}">한줄 소개가 없습니다.</p>
+            <a th:href="@{/mypage/intro-edit}" class="btn btn-sm btn-outline-secondary ml-3">수정</a>
+        </div>
+    </div>
+
+    <!-- 총 주행 거리 -->
+    <div class="form-group text-left">
+        <label>총 주행 거리</label>
+        <p th:text="${user.totalDistance + ' km'}">0 km</p>
+    </div>
+
+    <!-- 로그아웃 -->
+    <form th:action="@{/logout}" method="post" class="btn-logout">
+        <button type="submit" class="btn btn-outline-danger btn-block">로그아웃</button>
     </form>
 </div>
-<div th:replace="~{fragments/nav :: bottom('mypage')}"></div>
+
+<!-- FontAwesome (for icons) -->
+<script src="https://kit.fontawesome.com/a2e0c6f74f.js" crossorigin="anonymous"></script>
 </body>
 </html>

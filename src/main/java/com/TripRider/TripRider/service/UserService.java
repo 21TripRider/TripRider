@@ -4,22 +4,29 @@ import com.TripRider.TripRider.domain.User;
 import com.TripRider.TripRider.dto.AddUserRequest;
 import com.TripRider.TripRider.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public Long save(AddUserRequest dto){
-        return userRepository.save(User.builder()
+    public boolean save(AddUserRequest dto) {
+        // 이메일 중복 체크
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+            return false; // 중복 이메일 존재
+        }
+
+        User user = User.builder()
                 .email(dto.getEmail())
-                // 패스워드 암호화
-                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
-                .build()).getId();
-    }
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .nickname("익명")
+                .build();
 
+        userRepository.save(user);
+        return true;
+    }
 }

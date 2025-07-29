@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -19,9 +20,15 @@ public class UserApiController {
 
     // 회원가입 메소드
     @PostMapping("/user")
-    public String signup(AddUserRequest request){
-        userService.save(request); // 회원 가입 메소드 호출
-        return "redirect:/login"; // 회원 가입이 완료된 후 로그인 페이지로 이동
+    public String signup(AddUserRequest request, Model model) {
+        boolean result = userService.save(request); // true = 성공, false = 중복
+
+        if (!result) {
+            model.addAttribute("error", "이미 존재하는 이메일입니다.");
+            return "signup";
+        }
+
+        return "redirect:/login";
     }
 
     // 로그아웃 메소드
