@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:triprider/screens/Login/Email_input_screen.dart';
+import 'package:triprider/screens/Login/Email_Input_Screen.dart';
 import 'package:triprider/screens/Login/LoginScreen.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 

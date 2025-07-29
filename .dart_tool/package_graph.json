@@ -69,6 +69,15 @@
       ]
     },
     {
+      "name": "http",
+      "version": "0.13.6",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta"
+      ]
+    },
+    {
       "name": "lints",
       "version": "5.1.1",
       "dependencies": []
@@ -235,15 +244,6 @@
       "name": "sky_engine",
       "version": "0.0.0",
       "dependencies": []
-    },
-    {
-      "name": "http",
-      "version": "0.13.6",
-      "dependencies": [
-        "async",
-        "http_parser",
-        "meta"
-      ]
     },
     {
       "name": "http_parser",

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/home/Rentshoplist_Screen.dart';
+import 'package:triprider/screens/trip/Riding_Course.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -43,7 +44,15 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Home_Button_Pressed() {}
-  Course_Button_Pressed() {}
+  Course_Button_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return RidingCourse();
+        },
+      ),
+    );
+  }
   Ridergram_Button_Pressed() {}
   Mypage_Button_Pressed() {}
 }
