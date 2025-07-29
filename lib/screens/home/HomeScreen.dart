@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:triprider/screens/home/Rentshoplist_Screen.dart';
 
-class Homescreen extends StatelessWidget {
+class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
 
+  @override
+  State<Homescreen> createState() => _HomescreenState();
+}
+
+class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,22 +17,36 @@ class Homescreen extends StatelessWidget {
         children: [
           _Weather(),
           SizedBox(height: 15),
-          _Rent(),
+          _Rent(onPressed: Rent_Pressed),
           SizedBox(height: 15),
           _Record(),
         ],
       ),
 
-      bottomNavigationBar: _BottomIcons,
+      bottomNavigationBar: bottomAppBar(
+        homePressed: Home_Button_Pressed,
+        coursePressed: Course_Button_Pressed,
+        ridergramPressed: Ridergram_Button_Pressed,
+        mypagePressed: Mypage_Button_Pressed,
+      ),
     );
   }
-}
 
-Rent_Pressed() {}
-Home_Button_Pressed() {}
-Course_Button_Pressed() {}
-Ridergram_Button_Pressed() {}
-Mypage_Button_Pressed() {}
+  Rent_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return RentshopList();
+        },
+      ),
+    );
+  }
+
+  Home_Button_Pressed() {}
+  Course_Button_Pressed() {}
+  Ridergram_Button_Pressed() {}
+  Mypage_Button_Pressed() {}
+}
 
 ///날씨 위젯
 class _Weather extends StatelessWidget {
@@ -140,13 +160,15 @@ class _Weather extends StatelessWidget {
 
 ///랜트 위젯
 class _Rent extends StatelessWidget {
-  const _Rent({super.key});
+  final VoidCallback onPressed;
+
+  const _Rent({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: IconButton(
-        onPressed: Rent_Pressed,
+        onPressed: onPressed,
         icon: Image.asset('asset/image/RentCar.png'),
       ),
     );
@@ -274,26 +296,44 @@ class _Record extends StatelessWidget {
   }
 }
 
-BottomAppBar _BottomIcons = BottomAppBar(
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      IconButton(
-        onPressed: Home_Button_Pressed,
-        icon: Icon(Icons.home_filled, size: 40),
+class bottomAppBar extends StatelessWidget {
+  final VoidCallback homePressed;
+  final VoidCallback coursePressed;
+  final VoidCallback ridergramPressed;
+  final VoidCallback mypagePressed;
+
+  const bottomAppBar({
+    super.key,
+    required this.mypagePressed,
+    required this.homePressed,
+    required this.coursePressed,
+    required this.ridergramPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            onPressed: homePressed,
+            icon: Icon(Icons.home_filled, size: 40),
+          ),
+          IconButton(
+            onPressed: coursePressed,
+            icon: Icon(Icons.motorcycle_sharp, size: 40),
+          ),
+          IconButton(
+            onPressed: ridergramPressed,
+            icon: Icon(Icons.message, size: 40),
+          ),
+          IconButton(
+            onPressed: mypagePressed,
+            icon: Icon(Icons.person, size: 40),
+          ),
+        ],
       ),
-      IconButton(
-        onPressed: Course_Button_Pressed,
-        icon: Icon(Icons.motorcycle_sharp, size: 40),
-      ),
-      IconButton(
-        onPressed: Ridergram_Button_Pressed,
-        icon: Icon(Icons.message, size: 40),
-      ),
-      IconButton(
-        onPressed: Mypage_Button_Pressed,
-        icon: Icon(Icons.person, size: 40),
-      ),
-    ],
-  ),
-);
+    );
+  }
+}

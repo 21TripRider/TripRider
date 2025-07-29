@@ -13,12 +13,19 @@ class RentshopList extends StatelessWidget {
   }
 }
 
-class RentAppBar extends StatelessWidget implements PreferredSizeWidget {
+
+
+class RentAppBar extends StatefulWidget implements PreferredSizeWidget {
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
   const RentAppBar({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  State<RentAppBar> createState() => _RentAppBarState();
+}
 
+class _RentAppBarState extends State<RentAppBar> {
+  @override
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -30,8 +37,8 @@ class RentAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-        onPressed: () {},
+        onPressed: Arrow_Back_ios_Pressed,
+        icon: Icon(Icons.arrow_back_ios_new),
       ),
       actions: [
         IconButton(
@@ -40,6 +47,10 @@ class RentAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
     );
+  }
+
+  Arrow_Back_ios_Pressed() {
+    Navigator.of(context).pop();
   }
 }
 

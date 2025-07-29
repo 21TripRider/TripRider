@@ -10,5 +10,5 @@ import 'package:triprider/screens/home/HomeScreen.dart';
 import 'package:triprider/screens/home/Rentshoplist_Screen.dart';
 
 void main() {
-  runApp(MaterialApp(home: RentshopList()));
+  runApp(MaterialApp(home: Homescreen()));
 }
