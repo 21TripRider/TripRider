@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/home/HomeScreen.dart';
-import 'package:triprider/widgets/Login_Screen_Button.dart';
+import 'package:triprider/screens/Login/widgets/Login_Screen_Button.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -237,7 +237,7 @@ class KakaoLogin_Child extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset('asset/image/kakaotalk.png', height: 34, width: 34),
+        Image.asset('assets/image/kakaotalk.png', height: 34, width: 34),
 
         SizedBox(width: 20),
 
@@ -263,7 +263,7 @@ class GoogleLogin_Child extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset('asset/image/Google.png', width: 34, height: 34),
+        Image.asset('assets/image/Google.png', width: 34, height: 34),
 
         SizedBox(width: 20),
 

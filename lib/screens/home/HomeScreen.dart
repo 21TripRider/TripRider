@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/home/Rentshoplist_Screen.dart';
-import 'package:triprider/screens/trip/Riding_Course.dart';
+import 'package:triprider/screens/trip/Riding_Course_Screen.dart';
+import 'package:triprider/widgets/Bottom_App_Bar.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -24,12 +25,7 @@ class _HomescreenState extends State<Homescreen> {
         ],
       ),
 
-      bottomNavigationBar: bottomAppBar(
-        homePressed: Home_Button_Pressed,
-        coursePressed: Course_Button_Pressed,
-        ridergramPressed: Ridergram_Button_Pressed,
-        mypagePressed: Mypage_Button_Pressed,
-      ),
+      bottomNavigationBar: BottomAppBarWidget(),
     );
   }
 
@@ -43,7 +39,18 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
-  Home_Button_Pressed() {}
+
+  Home_Button_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return Homescreen();
+        },
+      ),
+    );
+  }
+
+
   Course_Button_Pressed() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -53,6 +60,7 @@ class _HomescreenState extends State<Homescreen> {
       ),
     );
   }
+
   Ridergram_Button_Pressed() {}
   Mypage_Button_Pressed() {}
 }
@@ -178,7 +186,7 @@ class _Rent extends StatelessWidget {
     return Container(
       child: IconButton(
         onPressed: onPressed,
-        icon: Image.asset('asset/image/RentCar.png'),
+        icon: Image.asset('assets/image/RentCar.png'),
       ),
     );
   }

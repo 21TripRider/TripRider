@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/Login/Password_Input_Screen.dart';
-import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
-import 'package:triprider/widgets/Login_Screen_Button.dart';
+import 'package:triprider/screens/Login/widgets/Next_Button_Widget_Child.dart';
+import 'package:triprider/screens/Login/widgets/Login_Screen_Button.dart';
 
 class EmailInputScreen extends StatefulWidget {
   const EmailInputScreen({super.key});

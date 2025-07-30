@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/Login/Email_Input_Screen.dart';
 import 'package:triprider/screens/Login/Nickname_Input_Screen.dart';
-import 'package:triprider/widgets/Login_Screen_Button.dart';
-import 'package:triprider/widgets/Next_Button_Widget_Child.dart';
+import 'package:triprider/screens/Login/widgets/Login_Screen_Button.dart';
+import 'package:triprider/screens/Login/widgets/Next_Button_Widget_Child.dart';
 
 class ConfirmPasswordScreen extends StatefulWidget {
   final String email; // 이전 화면에서 전달받을 이메일

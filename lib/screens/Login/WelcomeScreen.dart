@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/Login/Email_Input_Screen.dart';
 import 'package:triprider/screens/Login/LoginScreen.dart';
-import 'package:triprider/widgets/Login_Screen_Button.dart';
+import 'package:triprider/screens/Login/widgets/Login_Screen_Button.dart';
 
 class Welcomescreen extends StatefulWidget {
   const Welcomescreen({super.key});
@@ -64,7 +64,7 @@ class TripRider_logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(child: Image.asset('asset/image/logo.png')),
+        Container(child: Image.asset('assets/image/logo.png')),
 
         SizedBox(height: 30),
 
