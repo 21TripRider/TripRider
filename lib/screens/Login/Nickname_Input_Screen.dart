@@ -13,7 +13,7 @@ Future<bool> registerUser(
   String password,
   String nickname,
 ) async {
-  final url = Uri.parse("https://your.api/signup"); // ← 실제 API 주소로 바꿔줘
+  final url = Uri.parse("http://10.0.2.2:8080/api/auth/signup"); // ← 실제 API 주소
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},

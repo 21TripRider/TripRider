@@ -69,15 +69,6 @@
       ]
     },
     {
-      "name": "http",
-      "version": "0.13.6",
-      "dependencies": [
-        "async",
-        "http_parser",
-        "meta"
-      ]
-    },
-    {
       "name": "lints",
       "version": "5.1.1",
       "dependencies": []
@@ -246,6 +237,16 @@
       "dependencies": []
     },
     {
+      "name": "http",
+      "version": "1.4.0",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta",
+        "web"
+      ]
+    },
+    {
       "name": "http_parser",
       "version": "4.1.2",
       "dependencies": [
@@ -261,6 +262,11 @@
       "dependencies": [
         "collection"
       ]
+    },
+    {
+      "name": "web",
+      "version": "1.1.1",
+      "dependencies": []
     }
   ],
   "configVersion": 1

@@ -63,9 +63,9 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///Users/ryuhochan/.pub-cache/hosted/pub.dev/http-0.13.6",
+      "rootUri": "file:///Users/ryuhochan/.pub-cache/hosted/pub.dev/http-1.4.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.4"
     },
     {
       "name": "http_parser",
@@ -180,6 +180,12 @@
       "rootUri": "file:///Users/ryuhochan/.pub-cache/hosted/pub.dev/vm_service-15.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
+    },
+    {
+      "name": "web",
+      "rootUri": "file:///Users/ryuhochan/.pub-cache/hosted/pub.dev/web-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
     },
     {
       "name": "triprider",

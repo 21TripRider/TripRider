@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:triprider/screens/home/HomeScreen.dart';
 import 'package:triprider/widgets/Login_Screen_Button.dart';
 
 class Loginscreen extends StatefulWidget {
@@ -41,7 +42,7 @@ class _LoginscreenState extends State<Loginscreen> {
             R: 17,
             child: LoginButton_Child(),
             color: Color(0XFFFF4E6B),
-            onPressed: () {},
+            onPressed: Login_Pressed,
           ),
 
           _Or(),
@@ -54,7 +55,7 @@ class _LoginscreenState extends State<Loginscreen> {
             R: 17,
             child: KakaoLogin_Child(),
             color: Colors.yellow,
-            onPressed: () {},
+            onPressed: Login_Pressed,
           ),
 
           ///동일한 코드 반복 0,30,17,17
@@ -65,7 +66,7 @@ class _LoginscreenState extends State<Loginscreen> {
             R: 17,
             child: GoogleLogin_Child(),
             color: Colors.white,
-            onPressed: () {},
+            onPressed: Login_Pressed,
           ),
         ],
       ),
@@ -80,7 +81,15 @@ class _LoginscreenState extends State<Loginscreen> {
 
   Password_Search_Pressed() {}
 
-  Login_Pressed() {}
+  Login_Pressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return Homescreen();
+        },
+      ),
+    );
+  }
 
   Kakao_Login_Pressed() {}
 
