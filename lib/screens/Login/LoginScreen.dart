@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:triprider/screens/home/HomeScreen.dart';
 import 'package:triprider/screens/Login/widgets/Login_Screen_Button.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -11,6 +14,10 @@ class Loginscreen extends StatefulWidget {
 }
 
 class _LoginscreenState extends State<Loginscreen> {
+  /// 입력값 컨트롤러
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,12 +36,12 @@ class _LoginscreenState extends State<Loginscreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _insertEmail(onPressed: Close_Button_Pressed),
-
-          _insertPassword(onPressed: Close_Button_Pressed),
+          _insertEmail(controller: emailController, onPressed: Close_Button_Pressed),
+          _insertPassword(controller: passwordController, onPressed: Close_Button_Pressed),
 
           _findPassword(onPressed: Password_Search_Pressed),
 
+          /// 로그인 버튼
           LoginScreenButton(
             T: 20,
             B: 80,
@@ -55,7 +62,7 @@ class _LoginscreenState extends State<Loginscreen> {
             R: 17,
             child: KakaoLogin_Child(),
             color: Colors.yellow,
-            onPressed: Login_Pressed,
+            onPressed: Kakao_Login_Pressed,
           ),
 
           ///동일한 코드 반복 0,30,17,17
@@ -66,7 +73,7 @@ class _LoginscreenState extends State<Loginscreen> {
             R: 17,
             child: GoogleLogin_Child(),
             color: Colors.white,
-            onPressed: Login_Pressed,
+            onPressed: Google_Login_Pressed,
           ),
         ],
       ),
@@ -81,26 +88,86 @@ class _LoginscreenState extends State<Loginscreen> {
 
   Password_Search_Pressed() {}
 
-  Login_Pressed() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return Homescreen();
-        },
+  /// 로그인 요청 → 성공 시 홈 화면 이동
+  Login_Pressed() async {
+    final email = emailController.text;
+    final password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      _showErrorDialog('입력 오류', '이메일과 비밀번호를 입력하세요.');
+      return;
+    }
+
+    try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/auth/login');
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final token = data['token'];
+        print('JWT 토큰: $token');
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => Homescreen()),
+        );
+      } else if (response.statusCode == 401) {
+        _showErrorDialog('로그인 실패', '이메일 또는 비밀번호가 올바르지 않습니다.');
+      } else {
+        _showErrorDialog('로그인 실패', '이메일 또는 비밀번호가 올바르지 않습니다.');
+      }
+    } catch (e) {
+      _showErrorDialog('네트워크 오류', '서버와 연결할 수 없습니다.\n$e');
+    }
+  }
+
+  Kakao_Login_Pressed() async {
+    try {
+      kakao.OAuthToken token;
+
+      if (await kakao.isKakaoTalkInstalled()) {
+        token = await kakao.UserApi.instance.loginWithKakaoTalk();
+      } else {
+        token = await kakao.UserApi.instance.loginWithKakaoAccount();
+      }
+
+      print("카카오 AccessToken: ${token.accessToken}");
+
+      // ✅ 여기까지 Flutter에서만 동작
+      // 서버 연동은 나중에 JWT 붙이면 됨
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => Homescreen()),
+      );
+    } catch (e) {
+      _showErrorDialog('카카오 로그인 오류', '$e');
+    }
+  }
+
+  Google_Login_Pressed() {}
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text('확인'))
+        ],
       ),
     );
   }
-
-  Kakao_Login_Pressed() {}
-
-  Google_Login_Pressed() {}
 }
 
 ///이메일 입력 위젯
 class _insertEmail extends StatelessWidget {
   final VoidCallback onPressed;
+  final TextEditingController controller;
 
-  const _insertEmail({super.key, required this.onPressed});
+  const _insertEmail({super.key, required this.onPressed, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +182,7 @@ class _insertEmail extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: TextField(
+            controller: controller, // ✅ 컨트롤러 연결
             style: TextStyle(fontSize: 20),
             decoration: InputDecoration(
               suffixIcon: Container(
@@ -138,8 +206,9 @@ class _insertEmail extends StatelessWidget {
 ///비밀번호 입력 위젯
 class _insertPassword extends StatelessWidget {
   final VoidCallback onPressed;
+  final TextEditingController controller;
 
-  const _insertPassword({super.key, required this.onPressed});
+  const _insertPassword({super.key, required this.onPressed, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +223,8 @@ class _insertPassword extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: TextField(
+            controller: controller, // ✅ 컨트롤러 연결
+            obscureText: true,
             style: TextStyle(fontSize: 20),
             decoration: InputDecoration(
               suffixIcon: Container(
@@ -163,7 +234,6 @@ class _insertPassword extends StatelessWidget {
                   icon: Icon(Icons.close),
                 ),
               ),
-
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
