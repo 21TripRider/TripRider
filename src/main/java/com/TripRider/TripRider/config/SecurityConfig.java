@@ -23,9 +23,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // ✅ 변경됨
-                .httpBasic(AbstractHttpConfigurer::disable) // ✅ 변경됨
-                .formLogin(AbstractHttpConfigurer::disable) // ✅ 변경됨
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
