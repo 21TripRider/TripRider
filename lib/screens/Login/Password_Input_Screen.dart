@@ -84,7 +84,7 @@ class _PasswordInputScreenState extends State<PasswordInputScreen> {
       MaterialPageRoute(
         builder: (BuildContext context) {
           return ConfirmPasswordScreen(
-              email: widget.email,
+            email: widget.email,
             originalPassword: passwordController.text.trim(),
           );
         },

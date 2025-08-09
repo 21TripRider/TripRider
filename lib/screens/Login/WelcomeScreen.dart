@@ -151,3 +151,19 @@ class loginButton_Child extends StatelessWidget {
     );
   }
 }
+
+class LoginButton_Child extends StatelessWidget {
+  const LoginButton_Child({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '로그인',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+}

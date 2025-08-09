@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:triprider/screens/Trip/widgets/D_Course_Card.dart';
 import 'package:triprider/screens/home/HomeScreen.dart';
 import 'package:triprider/screens/trip/Custom_Riding_Course_Screen.dart';
-import 'package:triprider/screens/trip/widgets/D_Course_Card1.dart';
 import 'package:triprider/screens/trip/widgets/P_Course_Card.dart';
 import 'package:triprider/widgets/Bottom_App_Bar.dart';
 
@@ -22,6 +22,7 @@ class _RidingCourseState extends State<RidingCourse> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text(
           '라이딩 코스 추천',
@@ -85,7 +86,6 @@ class _RidingCourseState extends State<RidingCourse> {
   static void Favorite_Pressed() {}
   static void Course_Pressed() {}
   static void Refresh_Pressed() {}
-
 }
 
 /// 라이딩 코스 or 맞춤형 여행 코스
@@ -276,28 +276,12 @@ class Distance_Course extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
               children: [
-                DCourseCard1(
+                DCourseCard(
                   favorite_Pressed: favorite_Pressed,
                   course_Pressed: course_Pressed,
                 ),
 
-                DCourseCard1(
-                  favorite_Pressed: favorite_Pressed,
-                  course_Pressed: course_Pressed,
-                ),
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-              children: [
-                DCourseCard1(
-                  favorite_Pressed: favorite_Pressed,
-                  course_Pressed: course_Pressed,
-                ),
-
-                DCourseCard1(
+                DCourseCard(
                   favorite_Pressed: favorite_Pressed,
                   course_Pressed: course_Pressed,
                 ),
@@ -308,12 +292,12 @@ class Distance_Course extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
               children: [
-                DCourseCard1(
+                DCourseCard(
                   favorite_Pressed: favorite_Pressed,
                   course_Pressed: course_Pressed,
                 ),
 
-                DCourseCard1(
+                DCourseCard(
                   favorite_Pressed: favorite_Pressed,
                   course_Pressed: course_Pressed,
                 ),
@@ -324,12 +308,28 @@ class Distance_Course extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
               children: [
-                DCourseCard1(
+                DCourseCard(
                   favorite_Pressed: favorite_Pressed,
                   course_Pressed: course_Pressed,
                 ),
 
-                DCourseCard1(
+                DCourseCard(
+                  favorite_Pressed: favorite_Pressed,
+                  course_Pressed: course_Pressed,
+                ),
+              ],
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+              children: [
+                DCourseCard(
+                  favorite_Pressed: favorite_Pressed,
+                  course_Pressed: course_Pressed,
+                ),
+
+                DCourseCard(
                   favorite_Pressed: favorite_Pressed,
                   course_Pressed: course_Pressed,
                 ),

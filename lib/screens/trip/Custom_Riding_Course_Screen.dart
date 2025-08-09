@@ -14,11 +14,10 @@ class _CustomRidingCourseState extends State<CustomRidingCourse> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14), // 전체 좌우 패딩 통일
+      padding: const EdgeInsets.symmetric(horizontal: 15), // 전체 좌우 패딩 통일
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           /// 상단 "나의 취향을 담은 여행 코스" 버튼
           Create_Course_Button(custom_course_pressed: Custom_Course_Pressed),
 
@@ -56,7 +55,6 @@ class _CustomRidingCourseState extends State<CustomRidingCourse> {
     );
   }
 }
-
 
 ///'나의 취향을 담은 여행코스 생성' 버튼
 class Create_Course_Button extends StatelessWidget {

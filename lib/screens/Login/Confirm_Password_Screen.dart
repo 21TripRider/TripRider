@@ -20,7 +20,7 @@ class ConfirmPasswordScreen extends StatefulWidget {
 
 class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
   final TextEditingController confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {

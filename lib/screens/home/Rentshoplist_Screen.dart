@@ -79,9 +79,9 @@ class _SortState extends State<Sort> {
             },
             itemBuilder:
                 (BuildContext context) => [
-                  const PopupMenuItem(value: '거리순', child: Text('거리순')),
-                  const PopupMenuItem(value: '인기순', child: Text('인기순')),
-                ],
+              const PopupMenuItem(value: '거리순', child: Text('거리순')),
+              const PopupMenuItem(value: '인기순', child: Text('인기순')),
+            ],
             child: Row(
               children: [
                 Text(

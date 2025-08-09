@@ -9,10 +9,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<bool> registerUser(
-  String email,
-  String password,
-  String nickname,
-) async {
+    String email,
+    String password,
+    String nickname,
+    ) async {
   final url = Uri.parse("http://10.0.2.2:8080/api/auth/signup"); // ← 실제 API 주소
   final response = await http.post(
     url,
@@ -104,7 +104,7 @@ class _NicknameInputScreenState extends State<NicknameInputScreen> {
             return Loginscreen();
           },
         ),
-        (route) => false,
+            (route) => false,
       );
     } else {
       ScaffoldMessenger.of(
