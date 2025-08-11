@@ -20,10 +20,14 @@ public class UserService {
             return false; // 중복 이메일 존재
         }
 
+        // 닉네임이 없으면 기본값 "익명"
+        String nickname = (dto.getNickname() != null && !dto.getNickname().isBlank())
+                ? dto.getNickname() : "익명";
+
         User user = User.builder()
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .nickname("익명")
+                .nickname(nickname) // 🔹 닉네임 저장
                 .build();
 
         userRepository.save(user);
