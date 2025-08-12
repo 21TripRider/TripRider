@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,6 +34,7 @@ public class PostApiController {
                         .location(p.getLocation())
                         .hashtags(p.getHashtags())
                         .writer(p.getUser().getNickname())
+                        .likeCount(p.getLikeCount())
                         .build())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(result);
@@ -94,8 +96,30 @@ public class PostApiController {
     public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
                                               @PathVariable Long commentId,
                                               @AuthenticationPrincipal User user) {
-        // (선택) postId 검증하고 싶다면 comment 조회 후 comment.getPost().getId() 비교
         commentService.deleteComment(commentId, user);
         return ResponseEntity.noContent().build(); // 204
+    }
+
+    // 게시글 좋아요 추가
+    @PostMapping("/{id}/likes")
+    public ResponseEntity<?> like(@PathVariable Long id,
+                                  @AuthenticationPrincipal User user) {
+        int count = postService.likePost(id, user);
+        return ResponseEntity.ok(Map.of("likeCount", count, "liked", true));
+    }
+
+    // 게시글 좋아요 삭제
+    @DeleteMapping("/{id}/likes")
+    public ResponseEntity<?> unlike(@PathVariable Long id,
+                                    @AuthenticationPrincipal User user) {
+        int count = postService.unlikePost(id, user);
+        return ResponseEntity.ok(Map.of("likeCount", count, "liked", false));
+    }
+
+    // 게시글 좋아요 개수 확인
+    @GetMapping("/{id}/likes/count")
+    public ResponseEntity<?> likeCount(@PathVariable Long id) {
+        int count = postService.getLikeCount(id);
+        return ResponseEntity.ok(Map.of("likeCount", count));
     }
 }

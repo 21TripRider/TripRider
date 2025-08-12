@@ -30,4 +30,11 @@ public class Post {
     private String hashtags;  // 해시태그 문자열
 
     private LocalDateTime createdAt;
+
+    //좋아요 기능
+    @Column(nullable = false)
+    private int likeCount;
+
+    public void increaseLikeCount() { this.likeCount++; }
+    public void decreaseLikeCount() { if (this.likeCount > 0) this.likeCount--; }
 }
