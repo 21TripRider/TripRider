@@ -9,7 +9,13 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@Table(name = "app_user") // 💡 user 예약어 회피
+@Table(
+        name = "app_user",
+        indexes = {
+                @Index(name = "idx_app_user_email", columnList = "email", unique = true),
+                @Index(name = "idx_app_user_nickname", columnList = "nickname", unique = true)
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,9 +26,15 @@ public class User implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 190, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(length = 32, unique = true) // 닉네임 유니크 + 길이 제한
     private String nickname;
+
     private String badge;
     private String intro;
     private String profileImage;
@@ -40,7 +52,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // 권한 없음
+        return Collections.emptyList();
     }
 
     @Override public String getUsername() { return email; }

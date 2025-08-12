@@ -80,4 +80,21 @@ public class PostApiController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(contents);
     }
+
+    // 게시글 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id,
+                                           @AuthenticationPrincipal User user) {
+        postService.deletePost(id, user);
+        return ResponseEntity.noContent().build(); // 204
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
+                                              @PathVariable Long commentId,
+                                              @AuthenticationPrincipal User user) {
+        commentService.deleteComment(commentId, user);
+        return ResponseEntity.noContent().build(); // 204
+    }
 }

@@ -1,3 +1,4 @@
+
 package com.TripRider.TripRider.service;
 
 import com.TripRider.TripRider.domain.User;
