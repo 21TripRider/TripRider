@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -22,12 +21,15 @@ import java.util.UUID;
 @RequestMapping("/api/auth")
 public class AuthController {
 
+    private static final String DEFAULT_NICK_FOR_SOCIAL = "사용자";
+    private static final String DEFAULT_NICK_FOR_LOCAL  = "익명";
+
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
-    /** 회원가입 **/
+    /** 회원가입(일반) **/
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody AddUserRequest request) {
         boolean result = userService.save(request);
@@ -38,26 +40,34 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "회원가입 성공"));
     }
 
-    /** 로그인 **/
+    /** 로그인(일반) **/
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AddUserRequest request) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         String token = jwtTokenProvider.createToken(request.getEmail());
-        return ResponseEntity.ok(Map.of("token", token));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+
+        boolean needNickname = needNickname(user.getNickname());
+        return ResponseEntity.ok(Map.of(
+                "token", token,
+                "email", user.getEmail(),
+                "nickname", user.getNickname(),
+                "isNewUser", false,
+                "needNickname", needNickname
+        ));
     }
 
     /** 카카오 로그인 **/
     @PostMapping("/kakao")
     public ResponseEntity<?> kakaoLogin(@RequestBody Map<String, String> body) {
-        String accessToken = body.get("accessToken"); // Flutter에서 보낸 카카오 액세스 토큰
+        String accessToken = body.get("accessToken");
 
-        // 1. 카카오 서버에서 사용자 정보 요청
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        // GET 호출이므로 Content-Type 지정 필요 없음(무해하긴 함)
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
         ResponseEntity<Map> response = restTemplate.exchange(
@@ -68,34 +78,37 @@ public class AuthController {
         );
 
         Map<String, Object> kakaoUser = response.getBody();
-        Map<String, Object> kakaoAccount = (Map<String, Object>) kakaoUser.get("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+        Map<String, Object> kakaoAccount = kakaoUser != null ? (Map<String, Object>) kakaoUser.get("kakao_account") : null;
 
-        // email이 없으면 임시 생성
-        String email = (String) kakaoAccount.get("email");
-        if (email == null) {
+        String email = kakaoAccount != null ? (String) kakaoAccount.get("email") : null;
+        if (email == null || email.isBlank()) {
             email = "kakao_" + UUID.randomUUID() + "@triprider.com";
         }
-        String nickname = (String) profile.get("nickname");
 
-        // final 변수로 람다 문제 해결
-        String finalEmail = email;
+        boolean isNewUser = false;
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            isNewUser = true;
+            // ⬇️ 최초 소셜 가입은 실명/프로필 닉네임 사용하지 않고 기본 닉네임으로 저장
+            user = User.builder()
+                    .email(email)
+                    .password("") // 소셜은 비번 X
+                    .nickname(DEFAULT_NICK_FOR_SOCIAL)
+                    .build();
+            userRepository.save(user);
+        }
 
-        // 2. DB에 사용자 저장 또는 기존 유저 찾기
-        User user = userRepository.findByEmail(finalEmail)
-                .orElseGet(() -> userRepository.save(
-                        User.builder()
-                                .email(finalEmail)
-                                .nickname(nickname)
-                                .password("") // 소셜 로그인은 비번 X
-                                .build()
-                ));
+        String jwt = jwtTokenProvider.createToken(email);
+        // ⬇️ 신규이거나 기본/빈 닉네임이면 닉네임 설정 요구
+        boolean needNickname = isNewUser || needNickname(user.getNickname());
 
-        // 3. JWT 발급
-        String jwt = jwtTokenProvider.createToken(finalEmail);
-
-        // 4. JWT를 Flutter로 반환
-        return ResponseEntity.ok(Map.of("token", jwt));
+        return ResponseEntity.ok(Map.of(
+                "token", jwt,
+                "email", user.getEmail(),
+                "nickname", user.getNickname(),
+                "isNewUser", isNewUser,
+                "needNickname", needNickname
+        ));
     }
 
     /** 구글 로그인 **/
@@ -106,7 +119,6 @@ public class AuthController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-        headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
         ResponseEntity<Map> response = restTemplate.exchange(
@@ -117,24 +129,43 @@ public class AuthController {
         );
 
         Map<String, Object> googleUser = response.getBody();
-        String email = (String) googleUser.get("email");
-        String name = (String) googleUser.get("name");
+        String email = googleUser != null ? (String) googleUser.get("email") : null;
 
-        if (email == null) {
+        if (email == null || email.isBlank()) {
             email = "google_" + UUID.randomUUID() + "@triprider.com";
         }
 
-        String finalEmail = email;
-        User user = userRepository.findByEmail(finalEmail)
-                .orElseGet(() -> userRepository.save(
-                        User.builder()
-                                .email(finalEmail)
-                                .nickname(name)
-                                .password("")
-                                .build()
-                ));
+        boolean isNewUser = false;
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            isNewUser = true;
+            // ⬇️ 최초 소셜 가입은 기본 닉네임으로 저장
+            user = User.builder()
+                    .email(email)
+                    .password("")
+                    .nickname(DEFAULT_NICK_FOR_SOCIAL)
+                    .build();
+            userRepository.save(user);
+        }
 
-        String jwt = jwtTokenProvider.createToken(finalEmail);
-        return ResponseEntity.ok(Map.of("token", jwt));
+        String jwt = jwtTokenProvider.createToken(email);
+        boolean needNickname = isNewUser || needNickname(user.getNickname());
+
+        return ResponseEntity.ok(Map.of(
+                "token", jwt,
+                "email", user.getEmail(),
+                "nickname", user.getNickname(),
+                "isNewUser", isNewUser,
+                "needNickname", needNickname
+        ));
+    }
+
+    private boolean needNickname(String nickname) {
+        if (nickname == null) return true;
+        String n = nickname.trim();
+        if (n.isEmpty()) return true;
+        // 기본 닉네임은 최초 설정 요구
+        if (DEFAULT_NICK_FOR_SOCIAL.equals(n) || DEFAULT_NICK_FOR_LOCAL.equals(n)) return true;
+        return false;
     }
 }

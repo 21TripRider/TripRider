@@ -94,6 +94,7 @@ public class PostApiController {
     public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
                                               @PathVariable Long commentId,
                                               @AuthenticationPrincipal User user) {
+        // (선택) postId 검증하고 싶다면 comment 조회 후 comment.getPost().getId() 비교
         commentService.deleteComment(commentId, user);
         return ResponseEntity.noContent().build(); // 204
     }
