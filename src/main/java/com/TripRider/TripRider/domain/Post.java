@@ -35,6 +35,13 @@ public class Post {
     @Column(nullable = false)
     private int likeCount;
 
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdAt == null) this.createdAt = LocalDateTime.now();
+        // 하이버네이트가 기본 0을 넣지만, 방어적으로 가드
+        if (this.likeCount < 0) this.likeCount = 0;
+    }
+
     public void increaseLikeCount() { this.likeCount++; }
     public void decreaseLikeCount() { if (this.likeCount > 0) this.likeCount--; }
 }
