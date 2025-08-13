@@ -15,4 +15,5 @@ public class PostResponse {
     private String hashtags;
     private String writer;
     private int likeCount;
+    private boolean liked;
 }
