@@ -47,7 +47,8 @@ public class SecurityConfig {
                                 "/h2-console/**",         // ✅ H2 콘솔 허용
                                 "/home",                   // 홈 페이지
                                 "/api/jeju-weather",
-                                "/jeju-weather"
+                                "/jeju-weather",
+                                "/uploads/**", "/api/upload"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
