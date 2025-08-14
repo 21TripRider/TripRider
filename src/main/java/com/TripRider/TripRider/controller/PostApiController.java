@@ -2,12 +2,16 @@ package com.TripRider.TripRider.controller;
 
 import com.TripRider.TripRider.domain.*;
 import com.TripRider.TripRider.dto.*;
+import com.TripRider.TripRider.repository.PostLikeRepository;
 import com.TripRider.TripRider.repository.UserRepository;
 import com.TripRider.TripRider.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import com.TripRider.TripRider.dto.CommentRequest;
+import com.TripRider.TripRider.dto.CommentResponse;
+
 
 import java.util.List;
 import java.util.Map;
@@ -21,10 +25,11 @@ public class PostApiController {
     private final PostService postService;
     private final CommentService commentService;
     private final UserRepository userRepository;
+    private final PostLikeRepository postLikeRepository;
 
     // 게시글 전체 조회
     @GetMapping
-    public ResponseEntity<List<PostResponse>> getAllPosts() {
+    public ResponseEntity<List<PostResponse>> getAllPosts(@AuthenticationPrincipal User user) {
         List<Post> posts = postService.getAllPosts();
         List<PostResponse> result = posts.stream()
                 .map(p -> PostResponse.builder()
@@ -35,10 +40,12 @@ public class PostApiController {
                         .hashtags(p.getHashtags())
                         .writer(p.getUser().getNickname())
                         .likeCount(p.getLikeCount())
+                        .liked(user != null && postLikeRepository.existsByPostAndUser(p, user)) // ★
                         .build())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(result);
     }
+
 
     // 게시글 등록
     @PostMapping
@@ -51,7 +58,7 @@ public class PostApiController {
 
     // 게시글 상세
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPost(@PathVariable Long id) {
+    public ResponseEntity<?> getPost(@PathVariable Long id, @AuthenticationPrincipal User user) {
         Post post = postService.getPostById(id);
         PostResponse res = PostResponse.builder()
                 .id(post.getId())
@@ -60,6 +67,8 @@ public class PostApiController {
                 .location(post.getLocation())
                 .hashtags(post.getHashtags())
                 .writer(post.getUser().getNickname())
+                .likeCount(post.getLikeCount())
+                .liked(user != null && postLikeRepository.existsByPostAndUser(post, user)) // ★
                 .build();
         return ResponseEntity.ok(res);
     }
@@ -67,20 +76,27 @@ public class PostApiController {
     // 댓글 작성
     @PostMapping("/{id}/comments")
     public ResponseEntity<?> addComment(@PathVariable Long id,
-                                        @RequestBody Comment comment,
+                                        @RequestBody CommentRequest req,
                                         @AuthenticationPrincipal User user) {
-        commentService.addComment(id, comment.getContent(), user);
+        commentService.addComment(id, req.getContent(), user);
         return ResponseEntity.ok("댓글 등록 완료");
     }
 
     // 댓글 목록
     @GetMapping("/{id}/comments")
-    public ResponseEntity<List<String>> getComments(@PathVariable Long id) {
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long id,
+                                                             @AuthenticationPrincipal User me) {
         List<Comment> comments = commentService.getCommentsForPost(id);
-        List<String> contents = comments.stream()
-                .map(Comment::getContent)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(contents);
+        List<CommentResponse> res = comments.stream()
+                .map(c -> CommentResponse.builder()
+                        .id(c.getId())
+                        .user(c.getUser().getNickname())
+                        .content(c.getContent())
+                        .createdAt(c.getCreatedAt())
+                        .mine(me != null && c.getUser().getId().equals(me.getId()))
+                        .build())
+                .toList();
+        return ResponseEntity.ok(res);
     }
 
     // 게시글 삭제

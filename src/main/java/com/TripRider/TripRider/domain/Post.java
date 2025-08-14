@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,17 +25,24 @@ public class Post {
     @Column(nullable = false, length = 1000)
     private String content;
 
-    private String imageUrl;  // 이미지 경로
-
-    private String location;  // 위치 텍스트
-
-    private String hashtags;  // 해시태그 문자열
-
+    private String imageUrl;
+    private String location;
+    private String hashtags;
     private LocalDateTime createdAt;
 
-    //좋아요 기능
+    // 좋아요 수
     @Column(nullable = false)
     private int likeCount;
+
+    // Post ↔ PostLike 연관관계 추가
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> likes = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdAt == null) this.createdAt = LocalDateTime.now();
+        if (this.likeCount < 0) this.likeCount = 0;
+    }
 
     public void increaseLikeCount() { this.likeCount++; }
     public void decreaseLikeCount() { if (this.likeCount > 0) this.likeCount--; }
