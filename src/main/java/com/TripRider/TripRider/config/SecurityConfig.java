@@ -50,6 +50,13 @@ public class SecurityConfig {
                                 "/jeju-weather",
                                 "/uploads/**", "/api/upload"
                         ).permitAll()
+                        // 라이딩 코스: 조회는 전부 공개
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/travel/riding/**").permitAll()
+
+                        // 좋아요(등록/취소)만 인증 필요
+                        // {category}/{id} 형태를 쓰지 말고, 아래처럼 와일드카드 사용!
+                        .requestMatchers(org.springframework.http.HttpMethod.POST,   "/api/travel/riding/*/*/likes").authenticated()
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/travel/riding/*/*/likes").authenticated()
                         .anyRequest().authenticated()
                 )
 
