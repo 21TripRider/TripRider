@@ -34,6 +34,8 @@ public class CourseFileService {
     private final Map<String, RidingCourseDetailDto> store = new ConcurrentHashMap<>();
     private String keyOf(String category, long id) { return category + "#" + id; }
 
+
+
     @PostConstruct
     public void loadAll() throws Exception {
         if (coursePath.startsWith("classpath:")) {
@@ -124,6 +126,7 @@ public class CourseFileService {
         } catch (Exception ignored) { }
     }
 
+
     private RidingCourseDetailDto parse(String category, long id, String json) throws Exception {
         JsonNode root   = mapper.readTree(json);
         JsonNode route0 = root.path("routes").get(0);
@@ -151,15 +154,35 @@ public class CourseFileService {
             if (!from.isBlank() && !to.isBlank()) title = from + " → " + to;
         }
 
+        // JSON에 coverImageUrl 키가 있으면 우선 사용, 없으면 classpath에서 자동 탐색
+        String coverFromJson = root.path("coverImageUrl").isMissingNode() ? null : root.path("coverImageUrl").asText();
+        String cover = (coverFromJson != null && !coverFromJson.isBlank())
+                ? coverFromJson
+                : resolveCoverUrl(category, id);
+
         return RidingCourseDetailDto.builder()
                 .id(id)
                 .category(category)
                 .title(title)
                 .description("")
-                .coverImageUrl(null)
+                .coverImageUrl(cover)
                 .totalDistanceMeters(totalMeters)
                 .polyline(poly)
                 .build();
+    }
+
+    /** classpath:static/images/course/<category>/<id>.(png|jpg|jpeg|webp) 를 찾아 URL 리턴 */
+    private String resolveCoverUrl(String category, long id) {
+        String base = "static/images/course/" + category + "/" + id;
+        String[] exts = {"png", "jpg", "jpeg", "webp"};
+        ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver();
+        for (String ext : exts) {
+            Resource r = rpr.getResource("classpath:" + base + "." + ext);
+            if (r.exists()) {
+                return "/images/course/" + category + "/" + id + "." + ext;
+            }
+        }
+        return null; // 없으면 null
     }
 
     public List<RidingCourseCardDto> listCards(@Nullable Double myLat, @Nullable Double myLng) {

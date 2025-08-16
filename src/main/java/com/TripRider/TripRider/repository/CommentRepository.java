@@ -11,5 +11,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     void deleteByPost(Post post); //삭제 게시물에 대한 댓글 자동 삭제
 
-    int countByPost(Post post); // 댓글 개수
+    int countByPost(Post post);
+
+
 }
