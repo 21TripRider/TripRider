@@ -16,4 +16,5 @@ public class PostResponse {
     private String writer;
     private int likeCount;
     private boolean liked;
+    private int commentCount;
 }

@@ -2,6 +2,7 @@ package com.TripRider.TripRider.controller;
 
 import com.TripRider.TripRider.domain.*;
 import com.TripRider.TripRider.dto.*;
+import com.TripRider.TripRider.repository.CommentRepository;
 import com.TripRider.TripRider.repository.PostLikeRepository;
 import com.TripRider.TripRider.repository.UserRepository;
 import com.TripRider.TripRider.service.*;
@@ -26,6 +27,8 @@ public class PostApiController {
     private final CommentService commentService;
     private final UserRepository userRepository;
     private final PostLikeRepository postLikeRepository;
+    private final CommentRepository commentRepository;
+
 
     // 게시글 전체 조회
     @GetMapping
@@ -41,6 +44,7 @@ public class PostApiController {
                         .writer(p.getUser().getNickname())
                         .likeCount(p.getLikeCount())
                         .liked(user != null && postLikeRepository.existsByPostAndUser(p, user)) // ★
+                        .commentCount(commentRepository.countByPost(p))
                         .build())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(result);
@@ -69,6 +73,7 @@ public class PostApiController {
                 .writer(post.getUser().getNickname())
                 .likeCount(post.getLikeCount())
                 .liked(user != null && postLikeRepository.existsByPostAndUser(post, user)) // ★
+                .commentCount(commentRepository.countByPost(post))
                 .build();
         return ResponseEntity.ok(res);
     }
