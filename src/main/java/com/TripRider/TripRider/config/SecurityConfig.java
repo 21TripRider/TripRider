@@ -26,32 +26,36 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // ✅ CSRF 해제 (개발용)
+                //  CSRF 해제 (개발용)
                 .csrf(csrf -> csrf.disable())
 
-                // ✅ H2 콘솔 iframe 허용
+                //  H2 콘솔 iframe 허용
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
-                // ✅ 기본 로그인/HTTP Basic 비활성화 (JWT 방식 사용)
+                //  기본 로그인/HTTP Basic 비활성화 (JWT 방식 사용)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
 
-                // ✅ 세션을 사용하지 않음 (JWT 방식)
+                //  세션을 사용하지 않음 (JWT 방식)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // ✅ 요청 권한 설정
+                //  요청 권한 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",           // 회원가입, 로그인, 소셜 로그인
                                 "/api/users/check-nickname", // 닉네임 중복체크
-                                "/h2-console/**",         // ✅ H2 콘솔 허용
+                                "/h2-console/**",         //  H2 콘솔 허용
                                 "/home",                   // 홈 페이지
                                 "/api/jeju-weather",
                                 "/jeju-weather",
-                                "/uploads/**", "/api/upload"
+                                "/uploads/**", "/api/upload",
+                                "/images/**"
                         ).permitAll()
                         // 라이딩 코스: 조회는 전부 공개
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/travel/riding/**").permitAll()
+
+                        // nearby(주변 장소) 조회 공개
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/travel/nearby/**").permitAll()
 
                         // 좋아요(등록/취소)만 인증 필요
                         // {category}/{id} 형태를 쓰지 말고, 아래처럼 와일드카드 사용!

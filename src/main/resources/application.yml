@@ -40,6 +40,12 @@ spring:
 course:
   path: classpath:/course   # 개발 중에는 classpath 사용 -> 배포 시에 외부 파일로 이동 예정
 
+tourapi:
+  base-url: "https://apis.data.go.kr/B551011/KorService2"
+  service-key: "iQo2RqyJxO6Aq9UoLG3zi4v597yqgmlux9hm4Rr0GJ1FtlyXr0wEQAeO4eJWr6x7u2tbn3ZoVyzH1/bhUWRZ6g=="   # 퍼센트 인코딩된 서비스키
+  mobile-os: "ETC"
+  mobile-app: "TripRider"
+
 weather:
   api:
     base-url: "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0"

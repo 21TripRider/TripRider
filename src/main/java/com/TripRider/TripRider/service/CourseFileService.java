@@ -171,18 +171,24 @@ public class CourseFileService {
                 .build();
     }
 
-    /** classpath:static/images/course/<category>/<id>.(png|jpg|jpeg|webp) 를 찾아 URL 리턴 */
+    //** classpath:static/images/course/<category>/<id>.(png|jpg|jpeg|webp) 를 찾아 URL 리턴 */
     private String resolveCoverUrl(String category, long id) {
-        String base = "static/images/course/" + category + "/" + id;
+        String[] roots = {
+                "classpath:/static.images.course/"
+        };
         String[] exts = {"png", "jpg", "jpeg", "webp"};
         ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver();
-        for (String ext : exts) {
-            Resource r = rpr.getResource("classpath:" + base + "." + ext);
-            if (r.exists()) {
-                return "/images/course/" + category + "/" + id + "." + ext;
+
+        for (String root : roots) {
+            for (String ext : exts) {
+                Resource r = rpr.getResource(root + category + "/" + id + "." + ext);
+                if (r.exists()) {
+                    // URL 은 동일하게 /images/course/** 로 반환
+                    return "/images/course/" + category + "/" + id + "." + ext;
+                }
             }
         }
-        return null; // 없으면 null
+        return null;
     }
 
     public List<RidingCourseCardDto> listCards(@Nullable Double myLat, @Nullable Double myLng) {
