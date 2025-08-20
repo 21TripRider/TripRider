@@ -1,7 +1,8 @@
 package com.TripRider.TripRider.controller;
 
 import com.TripRider.TripRider.domain.*;
-import com.TripRider.TripRider.dto.*;
+import com.TripRider.TripRider.dto.board.PostRequest;
+import com.TripRider.TripRider.dto.board.PostResponse;
 import com.TripRider.TripRider.repository.CommentRepository;
 import com.TripRider.TripRider.repository.PostLikeRepository;
 import com.TripRider.TripRider.repository.UserRepository;
@@ -10,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import com.TripRider.TripRider.dto.CommentRequest;
-import com.TripRider.TripRider.dto.CommentResponse;
+import com.TripRider.TripRider.dto.board.CommentRequest;
+import com.TripRider.TripRider.dto.board.CommentResponse;
 
 
 import java.util.List;

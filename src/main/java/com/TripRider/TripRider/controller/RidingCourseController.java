@@ -1,8 +1,8 @@
 package com.TripRider.TripRider.controller;
 
 import com.TripRider.TripRider.domain.User;
-import com.TripRider.TripRider.dto.RidingCourseCardDto;
-import com.TripRider.TripRider.dto.RidingCourseDetailDto;
+import com.TripRider.TripRider.dto.riding.RidingCourseCardDto;
+import com.TripRider.TripRider.dto.riding.RidingCourseDetailDto;
 import com.TripRider.TripRider.service.CourseFileService;
 import com.TripRider.TripRider.service.RidingCourseLikeService;
 import lombok.RequiredArgsConstructor;

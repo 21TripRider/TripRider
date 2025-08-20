@@ -1,7 +1,7 @@
 package com.TripRider.TripRider.service;
 
 import com.TripRider.TripRider.domain.User;
-import com.TripRider.TripRider.dto.AddUserRequest;
+import com.TripRider.TripRider.dto.auth.AddUserRequest;
 import com.TripRider.TripRider.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

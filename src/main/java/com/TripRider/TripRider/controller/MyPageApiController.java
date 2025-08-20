@@ -2,8 +2,8 @@
 package com.TripRider.TripRider.controller;
 
 import com.TripRider.TripRider.domain.User;
-import com.TripRider.TripRider.dto.MyPageResponse;
-import com.TripRider.TripRider.dto.MyPageUpdateRequest;
+import com.TripRider.TripRider.dto.mypage.MyPageResponse;
+import com.TripRider.TripRider.dto.mypage.MyPageUpdateRequest;
 import com.TripRider.TripRider.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;

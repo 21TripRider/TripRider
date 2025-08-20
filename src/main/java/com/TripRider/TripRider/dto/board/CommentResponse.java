@@ -1,4 +1,4 @@
-package com.TripRider.TripRider.dto;
+package com.TripRider.TripRider.dto.board;
 
 import lombok.*;
 import java.time.LocalDateTime;

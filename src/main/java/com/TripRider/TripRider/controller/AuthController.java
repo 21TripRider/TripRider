@@ -1,6 +1,6 @@
 package com.TripRider.TripRider.controller;
 
-import com.TripRider.TripRider.dto.AddUserRequest;
+import com.TripRider.TripRider.dto.auth.AddUserRequest;
 import com.TripRider.TripRider.jwt.JwtTokenProvider;
 import com.TripRider.TripRider.repository.UserRepository;
 import com.TripRider.TripRider.service.UserService;

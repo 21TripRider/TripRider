@@ -1,7 +1,7 @@
 package com.TripRider.TripRider.service;
 
-import com.TripRider.TripRider.dto.NearbyPlaceDto;
-import com.TripRider.TripRider.dto.RidingCourseDetailDto;
+import com.TripRider.TripRider.dto.common.NearbyPlaceDto;
+import com.TripRider.TripRider.dto.riding.RidingCourseDetailDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.TripRider.TripRider.controller;
 
-import com.TripRider.TripRider.dto.NearbyPlaceDto;
-import com.TripRider.TripRider.dto.RidingCourseDetailDto;
+import com.TripRider.TripRider.dto.common.NearbyPlaceDto;
+import com.TripRider.TripRider.dto.riding.RidingCourseDetailDto;
 import com.TripRider.TripRider.service.CourseFileService;
 import com.TripRider.TripRider.service.TourApiService;
 import com.TripRider.TripRider.util.CoursePointsUtil;

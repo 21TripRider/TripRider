@@ -1,6 +1,6 @@
 package com.TripRider.TripRider.util;
 
-import com.TripRider.TripRider.dto.RidingCourseDetailDto;
+import com.TripRider.TripRider.dto.riding.RidingCourseDetailDto;
 
 import java.util.*;
 

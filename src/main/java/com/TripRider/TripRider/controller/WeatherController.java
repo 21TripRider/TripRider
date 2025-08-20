@@ -1,6 +1,6 @@
 package com.TripRider.TripRider.controller;
 
-import com.TripRider.TripRider.dto.SimpleWeatherResponse;
+import com.TripRider.TripRider.dto.weather.SimpleWeatherResponse;
 import com.TripRider.TripRider.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

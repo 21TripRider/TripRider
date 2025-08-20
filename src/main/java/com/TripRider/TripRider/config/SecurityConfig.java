@@ -64,13 +64,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                // ✅ OAuth2 로그인 설정
+                // OAuth2 로그인 설정
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl("/home", true)
                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                 )
 
-                // ✅ JWT 필터 등록
+                // JWT 필터 등록
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

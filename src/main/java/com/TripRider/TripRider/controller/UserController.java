@@ -1,7 +1,7 @@
 package com.TripRider.TripRider.controller;
 
 import com.TripRider.TripRider.domain.User;
-import com.TripRider.TripRider.dto.NicknameUpdateRequest;
+import com.TripRider.TripRider.dto.mypage.NicknameUpdateRequest;
 import com.TripRider.TripRider.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;

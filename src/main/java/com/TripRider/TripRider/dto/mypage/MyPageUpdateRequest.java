@@ -1,4 +1,4 @@
-package com.TripRider.TripRider.dto;
+package com.TripRider.TripRider.dto.mypage;
 
 import lombok.Getter;
 import lombok.Setter;

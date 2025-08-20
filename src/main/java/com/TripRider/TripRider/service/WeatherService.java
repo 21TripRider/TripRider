@@ -1,6 +1,6 @@
 package com.TripRider.TripRider.service;
 
-import com.TripRider.TripRider.dto.SimpleWeatherResponse;
+import com.TripRider.TripRider.dto.weather.SimpleWeatherResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

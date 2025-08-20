@@ -1,4 +1,4 @@
-package com.TripRider.TripRider.dto;
+package com.TripRider.TripRider.dto.common;
 
 import lombok.*;
 
@@ -23,4 +23,9 @@ public class NearbyPlaceDto {
      * 38 : 쇼핑
      * 39 : 음식점
      */
+
+    //맞춤형 코스 제작 시 필요
+    private String cat1;   // 대분류
+    private String cat2;   // 중분류
+    private String cat3;   // 소분류
 }
