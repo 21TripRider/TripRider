@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @RequiredArgsConstructor
@@ -51,6 +52,13 @@ public class SecurityConfig {
                                 "/uploads/**", "/api/upload",
                                 "/images/**"
                         ).permitAll()
+
+                        // 맞춤형 코스 탭: 테스트용으로 공개
+                        .requestMatchers(HttpMethod.GET,  "/api/custom/categories").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/api/custom/places").permitAll()
+                        .requestMatchers("/api/custom/selection/**").permitAll()
+                        .requestMatchers("/api/custom/courses/**").permitAll()
+
                         // 라이딩 코스: 조회는 전부 공개
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/travel/riding/**").permitAll()
 
