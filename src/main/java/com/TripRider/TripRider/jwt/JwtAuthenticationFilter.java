@@ -2,6 +2,7 @@ package com.TripRider.TripRider.jwt;
 
 import com.TripRider.TripRider.domain.User;
 import com.TripRider.TripRider.repository.UserRepository;
+import com.TripRider.TripRider.service.LogoutService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final LogoutService logoutService; // 🔹 추가
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -26,6 +28,12 @@ public class JwtAuthenticationFilter extends GenericFilter {
         String token = resolveToken(http);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
+            // ✅ 블랙리스트 확인
+            if (logoutService.isBlacklisted(token)) {
+                ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+
             String email = jwtTokenProvider.getEmail(token);
             User user = userRepository.findByEmail(email).orElse(null);
 

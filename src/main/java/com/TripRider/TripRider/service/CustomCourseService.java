@@ -1,8 +1,10 @@
 package com.TripRider.TripRider.service;
+
 import com.TripRider.TripRider.domain.CourseEntity;
+import com.TripRider.TripRider.domain.User;
 import com.TripRider.TripRider.dto.custom.*;
 import com.TripRider.TripRider.repository.CourseRepository;
-import com.TripRider.TripRider.service.CourseMapper;
+import com.TripRider.TripRider.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import java.util.*;
 public class CustomCourseService {
 
     private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
+    private final BadgeService badgeService; // ✅ 추가
 
     @Transactional
     public CourseView save(SaveCourseReq req, Long userId) {
@@ -33,6 +37,17 @@ public class CustomCourseService {
         );
 
         CourseEntity saved = courseRepository.save(e);
+
+        // ✅ 거리 누적 + 뱃지 지급
+        if (userId != null) {
+            User user = userRepository.findById(userId).orElseThrow();
+            int km = Optional.ofNullable(req.getDistanceKm()).orElse(0.0).intValue();
+            user.setTotalDistance(user.getTotalDistance() + km);
+
+            badgeService.checkAndGrantDistanceBadges(user);
+            userRepository.save(user);
+        }
+
         return CourseMapper.toView(saved);
     }
 
@@ -52,14 +67,12 @@ public class CustomCourseService {
     public CourseView detail(String id) {
         CourseEntity e = courseRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("course not found: " + id));
-        // LAZY 컬렉션 초기화 필요시 접근
-        e.getWaypoints().size();
+        e.getWaypoints().size(); // LAZY 초기화
         return CourseMapper.toView(e);
     }
 
     @Transactional
     public void delete(String id, Long userId) {
-        // (선택) userId 검증하려면 엔티티 조회 후 소유자 확인
         courseRepository.deleteById(id);
     }
 }

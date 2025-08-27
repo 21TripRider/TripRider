@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(
@@ -32,13 +34,21 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 32, unique = true) // 닉네임 유니크 + 길이 제한
+    @Column(length = 32, unique = true)
     private String nickname;
 
-    private String badge;
+    private String badge;         // ✅ 최근 획득 뱃지 (기존 필드 유지)
     private String intro;
     private String profileImage;
     private int totalDistance;
+
+    // ✅ 대표 뱃지 (프론트에서 선택된 대표 뱃지 이름)
+    @Column(length = 100)
+    private String representativeBadge;
+
+    // ✅ 내가 획득한 뱃지 전체 (UserBadge 매핑)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserBadge> userBadges = new ArrayList<>();
 
     public void updateProfile(String nickname, String intro, String badge) {
         this.nickname = nickname;

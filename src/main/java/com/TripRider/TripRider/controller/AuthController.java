@@ -5,6 +5,7 @@ import com.TripRider.TripRider.jwt.JwtTokenProvider;
 import com.TripRider.TripRider.repository.UserRepository;
 import com.TripRider.TripRider.service.UserService;
 import com.TripRider.TripRider.domain.User;
+import com.TripRider.TripRider.service.LogoutService; // 🔹 추가
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,6 +30,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final LogoutService logoutService; // 🔹 추가
 
     /** 회원가입(일반) **/
     @PostMapping("/signup")
@@ -59,6 +62,17 @@ public class AuthController {
         ));
     }
 
+    /** 로그아웃 **/
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+            logoutService.blacklistToken(token); // 🔹 토큰 블랙리스트 등록
+        }
+        return ResponseEntity.ok(Map.of("message", "로그아웃 완료 ✅"));
+    }
+
     /** 카카오 로그인 **/
     @PostMapping("/kakao")
     public ResponseEntity<?> kakaoLogin(@RequestBody Map<String, String> body) {
@@ -67,7 +81,6 @@ public class AuthController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-        // GET 호출이므로 Content-Type 지정 필요 없음(무해하긴 함)
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
         ResponseEntity<Map> response = restTemplate.exchange(
@@ -89,17 +102,15 @@ public class AuthController {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             isNewUser = true;
-            // ⬇️ 최초 소셜 가입은 실명/프로필 닉네임 사용하지 않고 기본 닉네임으로 저장
             user = User.builder()
                     .email(email)
-                    .password("") // 소셜은 비번 X
+                    .password("")
                     .nickname(DEFAULT_NICK_FOR_SOCIAL)
                     .build();
             userRepository.save(user);
         }
 
         String jwt = jwtTokenProvider.createToken(email);
-        // ⬇️ 신규이거나 기본/빈 닉네임이면 닉네임 설정 요구
         boolean needNickname = isNewUser || needNickname(user.getNickname());
 
         return ResponseEntity.ok(Map.of(
@@ -139,7 +150,6 @@ public class AuthController {
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             isNewUser = true;
-            // ⬇️ 최초 소셜 가입은 기본 닉네임으로 저장
             user = User.builder()
                     .email(email)
                     .password("")
@@ -164,7 +174,6 @@ public class AuthController {
         if (nickname == null) return true;
         String n = nickname.trim();
         if (n.isEmpty()) return true;
-        // 기본 닉네임은 최초 설정 요구
         if (DEFAULT_NICK_FOR_SOCIAL.equals(n) || DEFAULT_NICK_FOR_LOCAL.equals(n)) return true;
         return false;
     }

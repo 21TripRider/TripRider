@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +33,10 @@ public class Comment {
     private String content;
 
     private LocalDateTime createdAt;
+
+    // Comment ↔ CommentLike (댓글 좋아요)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLike> likes = new ArrayList<>();
 
     @PrePersist
     void onCreate() {

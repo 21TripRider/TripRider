@@ -19,6 +19,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 작성자
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -34,9 +35,13 @@ public class Post {
     @Column(nullable = false)
     private int likeCount;
 
-    // Post ↔ PostLike 연관관계 추가
+    // Post ↔ PostLike (게시글 좋아요)
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostLike> likes = new ArrayList<>();
+
+    // Post ↔ Comment (댓글)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

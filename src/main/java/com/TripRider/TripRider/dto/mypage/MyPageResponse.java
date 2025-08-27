@@ -15,4 +15,5 @@ public class MyPageResponse {
     private int totalDistance;
 
     private String badge;
+    private String representativeBadge; // ✅ 대표 뱃지
 }
