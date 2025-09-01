@@ -1,22 +1,19 @@
 package com.TripRider.TripRider.controller;
 
-import com.TripRider.TripRider.domain.*;
+import com.TripRider.TripRider.domain.User;
 import com.TripRider.TripRider.dto.board.PostRequest;
 import com.TripRider.TripRider.dto.board.PostResponse;
-import com.TripRider.TripRider.repository.CommentRepository;
-import com.TripRider.TripRider.repository.PostLikeRepository;
-import com.TripRider.TripRider.repository.UserRepository;
-import com.TripRider.TripRider.service.*;
+import com.TripRider.TripRider.dto.board.CommentRequest;
+import com.TripRider.TripRider.dto.board.CommentResponse;
+import com.TripRider.TripRider.service.PostService;
+import com.TripRider.TripRider.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import com.TripRider.TripRider.dto.board.CommentRequest;
-import com.TripRider.TripRider.dto.board.CommentResponse;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,54 +22,33 @@ public class PostApiController {
 
     private final PostService postService;
     private final CommentService commentService;
-    private final UserRepository userRepository;
-    private final PostLikeRepository postLikeRepository;
-    private final CommentRepository commentRepository;
 
     // 📌 게시글 전체 조회
     @GetMapping
     public ResponseEntity<List<PostResponse>> getAllPosts(@AuthenticationPrincipal User user) {
-        List<Post> posts = postService.getAllPosts();
-        List<PostResponse> result = posts.stream()
-                .map(p -> PostResponse.builder()
-                        .id(p.getId())
-                        .content(p.getContent())
-                        .imageUrl(p.getImageUrl())
-                        .location(p.getLocation())
-                        .hashtags(p.getHashtags())
-                        .writer(p.getUser().getNickname())
-                        .likeCount(p.getLikeCount())
-                        .liked(user != null && postLikeRepository.existsByPostAndUser(p, user)) // 사용자가 좋아요 눌렀는지 여부
-                        .commentCount(commentRepository.countByPost(p))
-                        .build())
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(result);
+        List<PostResponse> posts = postService.getAllPosts(user); // ✅ User 전달
+        return ResponseEntity.ok(posts);
     }
 
     // 📌 게시글 등록
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody PostRequest request,
                                         @AuthenticationPrincipal User user) {
-        postService.create(request.getContent(),
-                request.getImageUrl(), request.getLocation(), request.getHashtags(), user);
+        postService.create(
+                request.getContent(),
+                request.getImageUrl(),
+                request.getLocation(),
+                request.getHashtags(),
+                user
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body("게시글 작성 완료");
     }
 
     // 📌 게시글 상세 조회
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPost(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        Post post = postService.getPostById(id);
-        PostResponse res = PostResponse.builder()
-                .id(post.getId())
-                .content(post.getContent())
-                .imageUrl(post.getImageUrl())
-                .location(post.getLocation())
-                .hashtags(post.getHashtags())
-                .writer(post.getUser().getNickname())
-                .likeCount(post.getLikeCount())
-                .liked(user != null && postLikeRepository.existsByPostAndUser(post, user))
-                .commentCount(commentRepository.countByPost(post))
-                .build();
+    public ResponseEntity<PostResponse> getPost(@PathVariable Long id,
+                                                @AuthenticationPrincipal User user) {
+        PostResponse res = postService.getPostById(id, user); // ✅ User 전달
         return ResponseEntity.ok(res);
     }
 
@@ -101,8 +77,6 @@ public class PostApiController {
         commentService.deleteComment(commentId, user);
         return ResponseEntity.noContent().build();
     }
-
-    // ⚠️ 댓글 좋아요 관련 API 제거됨 (CommentLikeController에서 처리)
 
     // 📌 게시글 삭제
     @DeleteMapping("/{id}")
