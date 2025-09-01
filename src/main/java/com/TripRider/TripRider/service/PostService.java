@@ -3,29 +3,28 @@ package com.TripRider.TripRider.service;
 import com.TripRider.TripRider.domain.Post;
 import com.TripRider.TripRider.domain.PostLike;
 import com.TripRider.TripRider.domain.User;
+import com.TripRider.TripRider.dto.board.PostResponse;
 import com.TripRider.TripRider.repository.CommentRepository;
 import com.TripRider.TripRider.repository.PostLikeRepository;
 import com.TripRider.TripRider.repository.PostRepository;
-import com.TripRider.TripRider.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final PostLikeRepository postLikeRepository;
 
-    // 게시글 저장
+    // 📌 게시글 저장
     public void create(String content, String imageUrl, String location, String hashtags, User user) {
         Post post = Post.builder()
                 .user(user)
@@ -39,44 +38,67 @@ public class PostService {
         postRepository.save(post);
     }
 
-
-    // 게시글 목록
-    public List<Post> getAllPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc();
+    // 📌 게시글 목록 조회 (작성자 프로필 사진 포함)
+    @Transactional(readOnly = true)
+    public List<PostResponse> getAllPosts(User currentUser) {
+        return postRepository.findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(p -> PostResponse.builder()
+                        .id(p.getId())
+                        .content(p.getContent())
+                        .imageUrl(p.getImageUrl())
+                        .location(p.getLocation())
+                        .hashtags(p.getHashtags())
+                        .writer(p.getUser().getNickname())
+                        .profileImage(p.getUser().getProfileImage()) // ✅ 작성자 프로필 사진 추가
+                        .likeCount(p.getLikeCount())
+                        .liked(currentUser != null && postLikeRepository.existsByPostAndUser(p, currentUser))
+                        .commentCount(commentRepository.countByPost(p))
+                        .build())
+                .collect(Collectors.toList());
     }
 
-    // 게시글 상세 조회
-    public Post getPostById(Long id) {
-        return postRepository.findById(id)
+    // 📌 게시글 상세 조회 (작성자 프로필 사진 포함)
+    @Transactional(readOnly = true)
+    public PostResponse getPostById(Long id, User currentUser) {
+        Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        return PostResponse.builder()
+                .id(post.getId())
+                .content(post.getContent())
+                .imageUrl(post.getImageUrl())
+                .location(post.getLocation())
+                .hashtags(post.getHashtags())
+                .writer(post.getUser().getNickname())
+                .profileImage(post.getUser().getProfileImage()) // ✅ 작성자 프로필 사진 추가
+                .likeCount(post.getLikeCount())
+                .liked(currentUser != null && postLikeRepository.existsByPostAndUser(post, currentUser))
+                .commentCount(commentRepository.countByPost(post))
+                .build();
     }
 
-    // 게시글 삭제
+    // 📌 게시글 삭제
     @Transactional
     public void deletePost(Long postId, User requester) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        // 작성자 체크
         if (!post.getUser().getId().equals(requester.getId())) {
             throw new SecurityException("게시글 삭제 권한이 없습니다.");
         }
 
-        // 댓글 먼저 삭제(연관관계 컬렉션이 없으므로 레포 메서드 사용)
         commentRepository.deleteByPost(post);
-
-        // 게시글 삭제
         postRepository.delete(post);
     }
 
-    // 게시글 좋아요 로직
+    // 📌 게시글 좋아요
     @Transactional
     public int likePost(Long postId, User user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
         if (postLikeRepository.existsByPostAndUser(post, user)) {
-            // 이미 좋아요 한 경우 → 현재 카운트 반환(멱등)
             return post.getLikeCount();
         }
 
@@ -87,30 +109,29 @@ public class PostService {
                     .createdAt(LocalDateTime.now())
                     .build();
             postLikeRepository.save(like);
-            post.increaseLikeCount();              // 캐시 증가
+            post.increaseLikeCount();
             postRepository.save(post);
         } catch (DataIntegrityViolationException e) {
-            // 유니크 충돌 대비(동시성) → 무시하고 실제 카운트 재계산
+            // 동시성 충돌 시 무시 후 다시 카운트
         }
 
-        // 소스오브트루스 보정(선택): 동시성 환경에서 안전
         int count = (int) postLikeRepository.countByPost(post);
         post.setLikeCount(count);
         return count;
     }
 
+    // 📌 게시글 좋아요 취소
     @Transactional
     public int unlikePost(Long postId, User user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
         if (!postLikeRepository.existsByPostAndUser(post, user)) {
-            // 이미 좋아요 안한 상태 → 멱등
             return post.getLikeCount();
         }
 
         postLikeRepository.deleteByPostAndUser(post, user);
-        post.decreaseLikeCount();                 // 캐시 감소
+        post.decreaseLikeCount();
         postRepository.save(post);
 
         int count = (int) postLikeRepository.countByPost(post);
@@ -118,6 +139,7 @@ public class PostService {
         return count;
     }
 
+    // 📌 게시글 좋아요 개수 조회
     @Transactional(readOnly = true)
     public int getLikeCount(Long postId) {
         Post post = postRepository.findById(postId)
