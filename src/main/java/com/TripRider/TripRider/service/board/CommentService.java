@@ -8,9 +8,10 @@ import com.TripRider.TripRider.dto.board.CommentResponse;
 import com.TripRider.TripRider.repository.board.CommentLikeRepository;
 import com.TripRider.TripRider.repository.board.CommentRepository;
 import com.TripRider.TripRider.repository.board.PostRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -39,6 +40,7 @@ public class CommentService {
     }
 
     /** ✅ 댓글 조회 (닉네임 + 프로필 이미지 포함) */
+    @Transactional(readOnly = true)   // ✅ 세션을 메서드 동안 열어둠
     public List<CommentResponse> getCommentsForPost(Long postId, User currentUser) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
@@ -46,8 +48,8 @@ public class CommentService {
         return commentRepository.findByPostOrderByCreatedAtAsc(post).stream()
                 .map(comment -> CommentResponse.builder()
                         .id(comment.getId())
-                        .user(comment.getUser().getNickname())
-                        .profileImage(comment.getUser().getProfileImage())   // ✅ 작성자 프로필
+                        .user(comment.getUser().getNickname())          // 이미 로딩됨
+                        .profileImage(comment.getUser().getProfileImage())
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt()
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
