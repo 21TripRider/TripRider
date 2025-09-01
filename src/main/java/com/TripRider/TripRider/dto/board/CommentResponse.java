@@ -13,4 +13,5 @@ public class CommentResponse {
     private long likeCount;      // 좋아요 개수
     private boolean likedByMe;  // 내가 좋아요 눌렀는지
     private boolean mine;       // 내가 쓴 댓글인지
+    private String profileImage;
 }
