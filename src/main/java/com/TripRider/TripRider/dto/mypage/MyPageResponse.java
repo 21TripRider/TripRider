@@ -13,6 +13,6 @@ public class MyPageResponse {
     private String profileImage;
     private String intro;
     private int totalDistance;
-
     private String badge;
+    private String representativeBadge; // 대표 뱃지
 }
