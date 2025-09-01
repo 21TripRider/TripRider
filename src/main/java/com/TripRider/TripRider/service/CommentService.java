@@ -24,7 +24,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentLikeRepository commentLikeRepository;
 
-    /** 댓글 작성 */
+    /** ✅ 댓글 작성 */
     public void addComment(Long postId, String content, User user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
@@ -38,7 +38,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    /** 댓글 조회 (좋아요 개수 + 내가 좋아요 눌렀는지 여부 포함) */
+    /** ✅ 댓글 조회 (닉네임 + 프로필 이미지 포함) */
     public List<CommentResponse> getCommentsForPost(Long postId, User currentUser) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
@@ -47,6 +47,7 @@ public class CommentService {
                 .map(comment -> CommentResponse.builder()
                         .id(comment.getId())
                         .user(comment.getUser().getNickname())
+                        .profileImage(comment.getUser().getProfileImage())   // ✅ 작성자 프로필
                         .content(comment.getContent())
                         .createdAt(comment.getCreatedAt()
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
@@ -59,7 +60,7 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    /** 댓글 삭제 */
+    /** ✅ 댓글 삭제 */
     @Transactional
     public void deleteComment(Long commentId, User requester) {
         Comment comment = commentRepository.findById(commentId)
