@@ -18,6 +18,10 @@ spring:
       max-file-size: 20MB
       max-request-size: 40MB
 
+uploads:
+  rides:
+    path: ${user.dir}/uploads/rides
+
   security:
     oauth2:
       client:

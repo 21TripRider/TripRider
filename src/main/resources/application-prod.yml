@@ -19,6 +19,10 @@ spring:
       max-file-size: 20MB
       max-request-size: 40MB
 
+uploads:
+  rides:
+    path: ${user.dir}/uploads/rides
+
   flyway:
     enabled: true                 # 스키마 관리 도입 권장
     baseline-on-migrate: true

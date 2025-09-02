@@ -15,4 +15,21 @@ public class GeoUtil {
                         Math.sin(dLon/2)*Math.sin(dLon/2);
         return 2*R*Math.asin(Math.sqrt(a));
     }
+
+    // 하버사인 거리(m)
+    public static double haversineMeters(double lat1, double lon1, double lat2, double lon2) {
+        return haversineKm(lat1, lon1, lat2, lon2) * 1000;
+    }
+
+    // GPS 튀는 값 억제 (속도가 비현실적이면 0 처리)
+    public static double safeSegmentMeters(
+            double lat1, double lon1, long t1,
+            double lat2, double lon2, long t2
+    ) {
+        double meters = haversineMeters(lat1, lon1, lat2, lon2);
+        long dt = Math.max(1, (t2 - t1)); // ms
+        double vKmh = (meters / (dt/1000.0)) * 3.6;
+        if (vKmh > 200) return 0.0; // 하드 컷
+        return meters;
+    }
 }
