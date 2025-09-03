@@ -75,6 +75,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,   "/api/travel/riding/*/*/likes").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/travel/riding/*/*/likes").authenticated()
 
+                        // 동일 이메일 계정 동기화 여부
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/auth/link").authenticated()
+
+
                         // 그 외는 인증
                         .anyRequest().authenticated()
                 )

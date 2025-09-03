@@ -3,9 +3,11 @@ package com.TripRider.TripRider.service.mypage;
 import com.TripRider.TripRider.domain.user.User;
 import com.TripRider.TripRider.dto.auth.AddUserRequest;
 import com.TripRider.TripRider.repository.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,23 +16,29 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public boolean save(AddUserRequest dto) {
-        // 이메일 중복 체크
-        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-            return false; // 중복 이메일 존재
+    @Transactional
+    public boolean save(AddUserRequest req) {
+        String email = (req.getEmail() == null ? "" : req.getEmail().trim().toLowerCase());
+        String rawPw = (req.getPassword() == null ? "" : req.getPassword());
+        String nick  = (req.getNickname() == null || req.getNickname().isBlank())
+                ? "익명" : req.getNickname().trim();
+
+        // 선(先)중복 검사
+        if (userRepository.existsByEmail(email)) {
+            return false; // 중복
         }
 
-        // 닉네임이 없으면 기본값 "익명"
-        String nickname = (dto.getNickname() != null && !dto.getNickname().isBlank())
-                ? dto.getNickname() : "익명";
-
-        User user = User.builder()
-                .email(dto.getEmail())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .nickname(nickname) // 🔹 닉네임 저장
-                .build();
-
-        userRepository.save(user);
-        return true;
+        try {
+            User user = User.builder()
+                    .email(email)
+                    .password(passwordEncoder.encode(rawPw))
+                    .nickname(nick)
+                    .build();
+            userRepository.save(user);
+            return true;
+        } catch (DataIntegrityViolationException e) {
+            // 동시요청 등으로 DB 유니크 제약 위반 시에도 중복으로 처리
+            return false;
+        }
     }
 }
