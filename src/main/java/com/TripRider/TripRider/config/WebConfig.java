@@ -10,15 +10,14 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 기존 핸들러
-        String legacyUploadPath = System.getProperty("user.home") + "/triprider-uploads/";
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///" + legacyUploadPath);
+        String legacy = System.getProperty("user.home") + "/triprider-uploads/";
+        String current = System.getProperty("user.home") + "/TripRider/uploads/";
 
-        // 새 이미지 경로 (TripRider/uploads/)
-        String imageUploadPath = System.getProperty("user.home") + "/TripRider/uploads/";
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///" + imageUploadPath);
+                .addResourceLocations(
+                        "file:///" + current,   // 새 경로(우선 탐색)
+                        "file:///" + legacy    // 예전 경로(백업)
+                );
     }
 
     @Override
