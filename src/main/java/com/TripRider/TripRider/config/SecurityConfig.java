@@ -55,6 +55,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/check-nickname").permitAll()
                         .requestMatchers("/home").permitAll()
                         .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/jeju-weather/**").permitAll()
+                        .requestMatchers("/api/jeju-weather/**").permitAll()
                         .requestMatchers("/actuator/health").permitAll()            // Actuator 쓸 때만
 
                         // 코스/조회 공개
